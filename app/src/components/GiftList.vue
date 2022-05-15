@@ -9,6 +9,11 @@
                   <div class="col-12">
                     We would be absolutely delighted if our guests would contribute to our honeymoon via the Gift Registry that can be accessed by clicking the button below.
                   </div>
+                  <div class="col-12 mt-4">
+                    <div class="text-center alert alert-warning fw-bold" role="alert">
+                      Login credentials will be sent via email to RSVP'd guests in due course.
+                    </div>
+                  </div>
                   <div class="col-12 text-center mt-4">
                     <button class="btn btn-primary btn-lg btn-rsvp" @click="registryClick"><i class="bi bi-gift-fill"></i> Open the Gift Registry</button>
                   </div>
