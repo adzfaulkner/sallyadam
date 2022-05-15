@@ -1,0 +1,33 @@
+{
+	"registry": [{
+			"uuid": "2a702053-1a0f-4e2f-8f18-91d1516ffe0f",
+			"title": "Sunshine Mountain Lodge",
+			"image": "/image/sunshine_mountain_lodge.jpg",
+			"description": "The only \"ski in ski out\" resort in Banff. We will be staying for 5 nights indulging in plenty of skiing during the day and will be either relaxing in our Deluxe Waterfall room after a hard da's shift or in the jacuzzi etc."
+		},
+		{
+			"uuid": "214581f4-79d4-418a-8c92-90942c75935d",
+			"title": "Mount Royal Hotel",
+			"image": "/image/royal_mount_hotel.jpg",
+			"description": "This is infact our first point of call after a grueling 12+ hours travel time. We will stay here for 9 nights and we plan to make several trips to Lake Louise."
+		},
+		{
+			"uuid": "12774116-b58c-4e48-b6c8-28a791f02488",
+			"title": "Ski equipment and passes",
+			"image": "/image/ski.jpg",
+			"description": "We don't own ski's nor the slopes are not free therefore we will be hiring equipment and paying for various passes to enable us to access Banff's numerous ski slopes such as Sunshine, Lake Louise etc"
+		},
+		{
+			"uuid": "7d1f9125-8b3c-4200-8790-521b5e856610",
+			"title": "Calgary",
+			"image": "/image/calgary.jpg",
+			"description": "We finish our honeymoon with a 3 night stay in Calgary."
+		},
+		{
+			"uuid": "4396e263-9379-4868-bb92-773e67a7dc93",
+			"title": "Transport",
+			"image": "/image/flight_out.jpg",
+			"description": "If you are really hard pressed to contribute to any of the above, then you can always put money towards the travel."
+		}
+	]
+}

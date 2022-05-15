@@ -1,0 +1,20 @@
+{
+    "8ee54735-64eb-43c9-9f2f-6fcd62002572": {
+        "username": "test@test.com",
+        "password": "$2a$04$8WaSttm5hGOKp2splBgIRelF3xz5FxGYB1RCWgztI0KXOljCQKufG",
+        "firstname": "Adam",
+        "surname": "Faulkner"
+    },
+    "638d290a-7661-42a0-8822-d7c4a734fadc": {
+        "username": "test2@test.com",
+        "password": "$2a$04$8WaSttm5hGOKp2splBgIRelF3xz5FxGYB1RCWgztI0KXOljCQKufG",
+        "firstname": "Sally",
+        "surname": "Redman"
+    },    
+    "e877ce74-f7a6-4a3e-9172-5f1771a446dd": {
+        "username": "test3@test.com",
+        "password": "$2a$04$8WaSttm5hGOKp2splBgIRelF3xz5FxGYB1RCWgztI0KXOljCQKufG",
+        "firstname": "BamBam",
+        "surname": "Narna"
+    }
+}

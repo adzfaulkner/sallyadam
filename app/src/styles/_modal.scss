@@ -1,0 +1,32 @@
+.modal {
+  display: inherit;
+  &-backdrop {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0.5;
+  }
+  &-fade-enter,
+  &-fade-leave-to {
+    opacity: 0;
+  }
+  &-fade-enter-active,
+  &-fade-leave-active {
+    transition: opacity 0.15s linear;
+  }
+  &-header {
+    border-bottom: 0;
+  }
+  &-footer {
+    border-top: 0;
+  }
+  &-open {
+    overflow: hidden;
+    padding-right: 0px;
+  }
+}

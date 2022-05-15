@@ -1,0 +1,127 @@
+@import url(https://fonts.googleapis.com/css?family=Work+Sans:400,300,600,400italic,700);
+@import url(https://fonts.googleapis.com/css?family=Sacramento);
+$bootstrap-icons-font-src: url("../node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3")
+    format("woff2"),
+  url("../node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff?524846017b983fc8ded9325d94ed40f3")
+    format("woff");
+@import "../../node_modules/bootstrap-icons/font/bootstrap-icons.scss";
+
+@import "../../node_modules/bootstrap/scss/functions";
+
+// customs vars here
+$link-color: #a37c8e;
+
+$secondary: #7fa4c3;
+$primary: $link-color;
+
+$card-border-width: 0;
+$card-border-radius: 0;
+$card-bg: "inherit";
+
+$container-max-widths: (
+  sm: 540px,
+  md: 720px,
+  lg: 900px,
+  xl: 950px,
+  xxl: 1000px,
+);
+
+// required by bootstrap
+@import "../../node_modules/bootstrap/scss/variables";
+@import "../../node_modules/bootstrap/scss/mixins";
+
+// add bootstrap components at will
+@import "../../node_modules/bootstrap/scss/bootstrap.scss";
+
+// site specific css
+body {
+  font-family: "Work Sans";
+}
+
+h1,
+h2 {
+  font-family: "Sacramento";
+}
+
+section {
+  padding: map-get($spacers, 5) 0;
+
+  h2 {
+    text-align: center;
+    font-size: 40px;
+    margin-bottom: map-get($spacers, 5);
+  }
+
+  .gmap {
+    width: 100%;
+    height: 400px;
+
+    @include media-breakpoint-up(md) {
+      height: 100%;
+    }
+  }
+}
+
+.section {
+  &--primary {
+    background-color: map-get($theme-colors, "secondary");
+
+    color: $white;
+    h2 {
+      color: $white;
+    }
+  }
+  &--grey {
+    background-color: $gray-200;
+  }
+  .content {
+    max-width: 1000px;
+  }
+}
+
+.rsvp-form {
+  .modal-content {
+    height: 100%;
+    .modal-body {
+      overflow-y: inherit;
+      iframe {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+}
+
+.btn {
+  color: $white;
+  border: 1px;
+  &:focus,
+  &:hover,
+  &:active,
+  &:visited,
+  &:focus,
+  &:disabled {
+    color: $white;
+    border: 1px;
+    box-shadow: none;
+  }
+  &-sm {
+    font-size: $font-size-sm;
+  }
+  &-lg {
+    font-size: $font-size-lg * 1.2;
+  }
+}
+
+.contribute-container {
+  display: flex;
+  padding-bottom: 1em;
+  .input-group {
+    margin-left: auto;
+    width: 230px;
+  }
+}
+
+@import "./header";
+@import "./utils";
+@import "./modal";

@@ -1,0 +1,14 @@
+import { createStore } from 'vuex';
+import createPersistedState from "vuex-persistedstate";
+import auth from './modules/auth';
+import registry from './modules/registry';
+
+export const store = createStore({
+  modules: {
+    auth,
+    registry,
+  },
+  plugins: [createPersistedState({
+    paths: ["auth.user", "registry"]
+  })]
+});

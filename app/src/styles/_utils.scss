@@ -1,0 +1,18 @@
+.sacramento-font {
+  font-family: "Sacramento";
+}
+
+.work-sans-font {
+  font-family: "Work Sans";
+}
+
+.primary-color {
+  color: map-get($theme-colors, "primary");
+}
+.secondary-color {
+  color: map-get($theme-colors, "secondary");
+}
+
+.fs-7 {
+  font-size: 0.8rem;
+}

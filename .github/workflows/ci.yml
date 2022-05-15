@@ -1,0 +1,57 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - 'master'
+
+jobs:
+  BE_Build_Deploy:
+    name: BE Build Deploy
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      JWT_EXPIRE_MINS: ${{ secrets.JWT_EXPIRE_MINS }}
+      STRIPE_KEY: ${{ secrets.STRIPE_KEY }}
+      SUCCESS_URL: ${{ secrets.SUCCESS_URL }}
+      CANCEL_URL: ${{ secrets.CANCEL_URL }}
+      COOKIE_DOMAIN: ${{ secrets.COOKIE_DOMAIN }}
+      COOKIE_SECURE: ${{ secrets.COOKIE_SECURE }}
+      REGISTRY_DATA: ${{ secrets.REGISTRY_DATA }}
+      USERS_DATA: ${{ secrets.USERS_DATA }}
+      CORS_ALLOWED_ORIGIN: ${{ secrets.CORS_ALLOWED_ORIGIN }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build go image
+        run: make build_docker_image_go
+      - name: Run Go tests
+        run: make ci_tests_api
+      - name: Build binary
+        run: make ci_build_api
+      - name: Build serverless image
+        run: make build_docker_image_serverless
+      - name: Deploy function
+        run: make ci_deploy_api
+
+  FE_Build_Deploy:
+    name: FE Build Deploy
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET }}
+      REGISTRY_DATA: ${{ secrets.REGISTRY_DATA }}
+      API_BASE_URL: ${{ secrets.API_BASE_URL }}
+      AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
+      AWS_CF_DISTRIBUTION_ID: ${{ secrets.AWS_CF_DISTRIBUTION_ID }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build js image
+        run: make build_docker_image_js
+      - name: Run JS tests
+        run: make ci_tests_fe
+      - name: Build FE
+        run: make ci_build_fe
+      - name: Deploy FE
+        run: make ci_deploy_fe

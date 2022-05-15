@@ -1,0 +1,8 @@
+node_modules
+.profile.cov
+vendor
+.serverless
+.idea
+.DS_Store
+bin/*
+.env.local
