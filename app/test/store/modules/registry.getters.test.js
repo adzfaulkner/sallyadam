@@ -1,6 +1,12 @@
 import { assert, test } from 'vitest';
 
-import { getters } from '../../../src/store/modules/registry';
+import {
+    COMPONENT_CONFIRMATION,
+    COMPONENT_LIST, COMPONENT_REDIRECT_WAIT,
+    COMPONENT_SUCCESS,
+    getters,
+    STEP_THREE
+} from '../../../src/store/modules/registry';
 
 test('Getter Contributions test', () => {
     let res = getters.Contributions({
@@ -52,53 +58,28 @@ test('Getter ContributionTotal test', () => {
 });
 
 
-test('Getter OnStepOne test', () => {
-    let res = getters.OnStepOne({
-        completedStages: []
+test('Getter RenderComponent test', () => {
+    let res = getters.RenderComponent({
+        completedStages: [],
+        redirectWait: false,
     });
-    assert.isTrue(res);
+    assert.equal(res, COMPONENT_LIST);
 
-    res = getters.OnStepOne({
-        completedStages: [1]
+    res = getters.RenderComponent({
+        completedStages: [1],
+        redirectWait: false,
     });
-    assert.isFalse(res);
+    assert.equal(res, COMPONENT_CONFIRMATION);
 
-    res = getters.OnStepOne({
-        completedStages: [1,2]
+    res = getters.RenderComponent({
+        completedStages: [STEP_THREE],
+        redirectWait: false,
     });
-    assert.isFalse(res);
-});
+    assert.equal(res, COMPONENT_SUCCESS);
 
-test('Getter OnStepTwo test', () => {
-    let res = getters.OnStepTwo({
-        completedStages: []
+    res = getters.RenderComponent({
+        completedStages: [1,2],
+        redirectWait: true,
     });
-    assert.isFalse(res);
-
-    res = getters.OnStepTwo({
-        completedStages: [1]
-    });
-    assert.isTrue(res);
-
-    res = getters.OnStepTwo({
-        completedStages: [1,2]
-    });
-    assert.isFalse(res);
-});
-
-test('Getter OnStepThree test', () => {
-    let res = getters.OnStepThree({
-        completedStages: []
-    });
-    assert.isFalse(res);
-
-    res = getters.OnStepThree({
-        completedStages: [1]
-    });
-    assert.isFalse(res);
-
-    res = getters.OnStepThree({
-        completedStages: [1,2]
-    });
-    assert.isTrue(res);
+    assert.equal(res, COMPONENT_REDIRECT_WAIT);
 });

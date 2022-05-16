@@ -1,19 +1,30 @@
 import currency from "currency.js";
 import axios from 'axios';
 
+export const COMPONENT_SUCCESS = 'success';
+export const COMPONENT_LIST = 'list';
+export const COMPONENT_CONFIRMATION = 'confirmation';
+export const COMPONENT_REDIRECT_WAIT = 'redirectWait';
+
 const STEP_ONE = 'step_one';
 const STEP_TWO = 'step_two';
+export const STEP_THREE = 'step_three';
 const FEE_PER = 0.014; // 1.4%
 const FEE_PENCE = 20; // 20p
 
+const initialState = {
+    contributions: {}, // step one
+    contributionTotal: 0, // step one & two
+    contributionsUuids: [], // step two
+    completedStages: [],
+    extra: 0, // step two
+    payFee: false, // step two
+    message: null, // step two
+    redirectWait: false, // step two
+};
+
 const state = {
-    contributions: {},
-    contributionTotal: 0,
-    contributionsUuids: [],
-    completedStages: [], 
-    extra: 0,
-    payFee: false,
-    message: null,
+    ...initialState
 };
 
 function CalculateExtra(payFee, total) {
@@ -52,14 +63,33 @@ export const getters = {
     ContributionTotal: (state) => {
         return currency(state.contributionTotal + state.extra, { fromCents: true, symbol: '£' });
     },
-    OnStepOne: (state) => state.completedStages.length === 0,
-    OnStepTwo: (state) => state.completedStages.length === 1,
-    OnStepThree: (state) => state.completedStages.length === 2,
+    RenderComponent: (state) => {
+        const { completedStages, redirectWait } = state;
+
+        if (completedStages[completedStages.length - 1] === STEP_THREE) {
+            return COMPONENT_SUCCESS;
+        }
+
+        if (completedStages.length === 0) {
+            return COMPONENT_LIST;
+        }
+
+        if (completedStages.length === 1) {
+            return COMPONENT_CONFIRMATION;
+        }
+
+        if (redirectWait) {
+            return COMPONENT_REDIRECT_WAIT;
+        }
+    },
     Message: (state) => state.message,
     PayFee: (state) => state.payFee,
 };
 
 export const actions = {
+    async ResetRegistry({commit}) {
+        await commit("reset");
+    },
     async AddContribution({commit}, input) {
         await commit("addContribution", input);
     },
@@ -76,7 +106,7 @@ export const actions = {
     async LastStep({commit}) {
         await commit("lastStep");
     },
-    async Checkout({state, dispatch}) {
+    async Checkout({state, dispatch, commit}) {
         const { completedStages } = state;
 
         if (
@@ -85,6 +115,8 @@ export const actions = {
         ) {
             return;
         }
+
+        await commit('redirectWait', true);
 
         const contribs = ContributionsToCurrency(state.contributions);
         const items = [];
@@ -112,11 +144,13 @@ export const actions = {
                 }
             });
 
-            dispatch("LastStep");
-
             const {url} = response.data;
             window.location = url;
+            dispatch("LastStep");
+            await commit('redirectWait', false);
         } catch (e) {
+            await commit('redirectWait', false);
+
             if (e.response.status === 403) {
                 dispatch("LogOut");
                 dispatch("LoginError", "Session expired. Please log back in.");
@@ -127,9 +161,15 @@ export const actions = {
             throw e
         }
     },
+    async SuccessfulPayment({commit}) {
+        await commit('success');
+    },
 };
 
 export const mutations = {
+    reset(state) {
+        Object.assign(state, initialState)
+    },
     addContribution(state, input) {
         const { uuid, amount } = input;
 
@@ -180,6 +220,15 @@ export const mutations = {
             ...completedStages
         ];
     },
+    redirectWait(state, val) {
+        state.redirectWait = val === true;
+    },
+    success(state) {
+        state.completedStages = [
+            ...state.completedStages,
+            STEP_THREE
+        ];
+    }
 };
 
 export default {

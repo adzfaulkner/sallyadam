@@ -24,7 +24,7 @@
     <modal-view className="rsvp-form" v-show="isRSVPModalVisible" @close="closeRSVPModal">
       <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSe9Jnk7yxhGZOzsgAz6IPeb1uskp4ZJdrZ2P02VBccIxTmCZw/viewform?embedded=true" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
     </modal-view>
-    <registry-modal @close="closeRegistryModal" :isGiftRegistryModalVisible="isGiftRegistryModalVisible" :registryData="registryData" :registryDataMap="registryDataMap"></registry-modal>
+    <registry-modal @close="closeRegistryModal" :isGiftRegistryModalVisible="isGiftRegistryModalVisible" :registryData="registryData" :registryDataMap="registryDataMap" :successPayment="successPayment" :cancelPayment="cancelPayment"></registry-modal>
   </div>
 </template>
 
@@ -53,12 +53,20 @@
       return {
         isRSVPModalVisible: false,
         isGiftRegistryModalVisible: false,
+        isSuccessModalVisible: false,
         registryData: [],
         registryDataMap: {},
+        successPayment: false,
+        cancelPayment: false,
       };
     },
     beforeMount() {
       try {
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        this.cancelPayment = urlParams.get('cancel') === 'true';
+        this.successPayment = urlParams.get('success') === 'true';
+
         this.registryData = JSON.parse(atob(process.env.VUE_APP_REGISTRY_DATA)).registry;
 
         for (const index in this.registryData) {
@@ -69,11 +77,8 @@
       }
     },
     mounted() {
-      const queryString = window.location.search;
-      const urlParams = new URLSearchParams(queryString);
-      const cancelled = urlParams.get('cancel') === 'true';
-
-      if (cancelled) {
+      if (this.cancelPayment || this.successPayment) {
+        this.$router.push("/");
         this.showRegsitryModal();
       }
     },
@@ -101,7 +106,7 @@
             return;
           case 'registry':
             this.showRegsitryModal();
-            return;   
+            return;
         }
       }
     }
