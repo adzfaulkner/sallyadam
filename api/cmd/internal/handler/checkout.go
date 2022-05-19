@@ -7,7 +7,6 @@ import (
 
 	"github.com/adzfaulkner/sallyadam/internal/payment"
 	"github.com/adzfaulkner/sallyadam/internal/registry"
-	"github.com/adzfaulkner/sallyadam/internal/user"
 	"github.com/aws/aws-lambda-go/events"
 	"go.uber.org/zap"
 )
@@ -30,13 +29,14 @@ type requestBody struct {
 	Currency string `json:"currency"`
 	Message  string `json:"message"`
 	Extra    int64  `json:"extra"`
+	Email    string `json:"email"`
 }
 
 type response struct {
 	URL string `json:"url"`
 }
 
-func checkoutHandler(request *events.APIGatewayProxyRequest, paymentHandler paymentHandler, usr *user.User, regRepo regRepo, logHandler logHandler) (ResponseBody, ResponseStatus) {
+func checkoutHandler(request *events.APIGatewayProxyRequest, paymentHandler paymentHandler, regRepo regRepo, logHandler logHandler) (ResponseBody, ResponseStatus) {
 	var reqBody requestBody
 	err := json.Unmarshal([]byte(request.Body), &reqBody)
 
@@ -55,7 +55,7 @@ func checkoutHandler(request *events.APIGatewayProxyRequest, paymentHandler paym
 		return generateGenericResponse("Invalid request"), http.StatusBadRequest
 	}
 
-	res, err := paymentHandler.CreateSession(items, cur, usr.Username)
+	res, err := paymentHandler.CreateSession(items, cur, reqBody.Email)
 
 	if err != nil {
 		logHandler.Error("could not create stripe payment session", zap.Error(err))

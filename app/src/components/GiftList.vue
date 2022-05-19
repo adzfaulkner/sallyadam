@@ -11,7 +11,7 @@
                   </div>
                   <div class="col-12 mt-4">
                     <div class="text-center alert alert-warning fw-bold" role="alert">
-                      Login credentials will be sent via email to RSVP'd guests in due course.
+                      Guest passwords will be sent out via email out in due course.
                     </div>
                   </div>
                   <div class="col-12 text-center mt-4">

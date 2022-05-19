@@ -1,14 +1,14 @@
 <template>
   <modal-view className="registry-form" v-show="isGiftRegistryModalVisible" :hideClose="showModalClose()" @close="close">
        <template v-slot:header>
-         <h6 class="modal-title" v-if="showModalTitle()">Welcome {{user.firstname}} {{user.surname}}</h6>
+         <h6 class="modal-title" v-if="showModalTitle()">Welcome Guest</h6>
          <span class="ms-3" v-if="showLogoutCTA()">[<a href="javascript://" @click="LogOut">Logout</a>]</span>
          <h5 class="modal-title" v-if="!isAuthenticated">Login</h5>
        </template>
        <template v-slot:default>
           <login-form v-if="!isAuthenticated" @submitted="login" :loginError="loginError" :submitDisabled="submitDisabled"></login-form>
           <registry-list v-if="showRegistryList()" :registryData="registryData" @contribute="contribute" :contributions="contributions"></registry-list>
-          <registry-confirmation v-if="showRegistryConfirmation()" :registryData="registryData" :registryDataMap="registryDataMap" :contributions="contributions" :messageInput="message" :willPayFee="willPayFee" @payFee="payFee" @messageAdded="messageAdded" @changes="lastStep"></registry-confirmation>
+          <registry-confirmation v-if="showRegistryConfirmation()" :registryData="registryData" :registryDataMap="registryDataMap" :contributions="contributions" :messageInput="message" :emailInput="email" :willPayFee="willPayFee" @payFee="payFee" @messageAdded="messageAdded" @emailAdded="emailAdded" @changes="lastStep"></registry-confirmation>
           <div v-if="showRedirectWait()" class="d-flex align-items-center">
             <strong>Hang tight we will be redirecting you to Stripe payments shortly...</strong>
             <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
@@ -61,13 +61,13 @@
     },
     computed: {
       ...mapGetters({
-        user: "StateUser", 
         isAuthenticated: "isAuthenticated",
         loginError: "LoginError",
         contributionTotal: "ContributionTotal",
         hasContributions: "HasContributions",
         contributions: "Contributions",
         message: "Message",
+        email: "Email",
         willPayFee: "PayFee",
         renderComponent: "RenderComponent",
       }),
@@ -85,16 +85,17 @@
         "AddContribution",
         "NextStep", 
         "PayFee", 
-        "MessageAdded", 
+        "MessageAdded",
+        "EmailAdded",
         "LastStep",
         "Verify",
         "ResetRegistry",
       ]),
-      async login(username, password) {
+      async login(password) {
           this.submitDisabled = true;
           this.$forceUpdate();
 
-          await this.LogIn({username, password});
+          await this.LogIn({password});
           this.submitDisabled = false;
       },
       async contribute(uuid, amount) {
@@ -112,6 +113,9 @@
       },
       async messageAdded(message) {
         await this.MessageAdded(message);
+      },
+      async emailAdded(email) {
+        await this.EmailAdded(email);
       },
       async lastStep() {
         await this.LastStep();

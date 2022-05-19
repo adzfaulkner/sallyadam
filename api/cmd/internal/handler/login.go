@@ -7,32 +7,21 @@ import (
 
 	"github.com/adzfaulkner/sallyadam/internal/cookie"
 	"github.com/adzfaulkner/sallyadam/internal/password"
-	"github.com/adzfaulkner/sallyadam/internal/user"
 	"github.com/aws/aws-lambda-go/events"
+	"github.com/google/uuid"
 	"go.uber.org/zap"
 )
 
 type BodyRequest struct {
-	Username string `json:"username"`
 	Password string `json:"password"`
 }
 
-type UserResponse struct {
-	Firstname string `json:"firstname"`
-	Surname   string `json:"surname"`
-}
-
 type BodyResponse struct {
-	User UserResponse `json:"user"`
+	Success bool `json:"success"`
 }
 
-type userRepo interface {
-	FindByUsername(username string) (*user.ID, *user.User)
-}
-
-func loginHandler(request *events.APIGatewayProxyRequest, tokenHandler tokenHandler, usrRepo userRepo, cookieHandler *cookie.Handler, logHandler logHandler) (ResponseBody, ResponseStatus, ResponseHeaders) {
+func loginHandler(request *events.APIGatewayProxyRequest, tokenHandler tokenHandler, cookieHandler *cookie.Handler, logHandler logHandler, pwdChk password.Check) (ResponseBody, ResponseStatus, ResponseHeaders) {
 	bodyRequest := BodyRequest{
-		Username: "",
 		Password: "",
 	}
 
@@ -43,30 +32,20 @@ func loginHandler(request *events.APIGatewayProxyRequest, tokenHandler tokenHand
 		return generateGenericResponse("Malformed request"), http.StatusBadRequest, nil
 	}
 
-	userID, usr := usrRepo.FindByUsername(bodyRequest.Username)
-	if userID == nil {
-		return generateGenericResponse("Invalid credentials. Please try again."), http.StatusNotFound, nil
-	}
-
-	validPwd := password.CheckPassword([]byte(bodyRequest.Password), []byte(usr.Password))
+	validPwd := pwdChk([]byte(bodyRequest.Password))
 	if !validPwd {
 		return generateGenericResponse("Invalid credentials. Please try again."), http.StatusNotFound, nil
 	}
 
-	tok, err := tokenHandler.CreateToken(string(*userID))
+	tok, err := tokenHandler.CreateToken(uuid.New().String())
 	if err != nil {
 		logHandler.Error("could not create token", zap.Error(err))
 
 		return generateGenericResponse("Contact support"), http.StatusInternalServerError, nil
 	}
 
-	userResponse := UserResponse{
-		Firstname: usr.Firstname,
-		Surname:   usr.Surname,
-	}
-
 	bodyResponse := BodyResponse{
-		User: userResponse,
+		Success: true,
 	}
 
 	// Marshal the response into json bytes, if error return 404

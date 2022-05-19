@@ -7,7 +7,6 @@ import (
 
 	"github.com/adzfaulkner/sallyadam/internal/payment"
 	"github.com/adzfaulkner/sallyadam/internal/registry"
-	"github.com/adzfaulkner/sallyadam/internal/user"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/stretchr/testify/assert"
 )
@@ -172,7 +171,7 @@ func Test_CheckoutHandler(t *testing.T) {
 			items = fmt.Sprintf("[{%q:%q,%q:%d}]", "uuid", "UUID", "amount", 100)
 		}
 
-		return fmt.Sprintf("{%q:%s,%q:%d,%q:%q,%q:%q}", "items", items, "extra", extra, "currency", currency, "message", message)
+		return fmt.Sprintf("{%q:%s,%q:%d,%q:%q,%q:%q,%q:%q}", "items", items, "extra", extra, "currency", currency, "message", message, "email", "test@example.com")
 	}
 
 	testCases := []struct {
@@ -200,7 +199,7 @@ func Test_CheckoutHandler(t *testing.T) {
 			paymentHandler: nil,
 			expBody:        "{\"message\":\"Invalid request\"}",
 			expStatusCode:  http.StatusBadRequest,
-			expLogLine:     "info create line items from req body err [{req body 15 0 {\"items\":[],\"extra\":100,\"currency\":\"GBP\",\"message\":\"\"} <nil>} {error 26 0  no registry items submitted}]",
+			expLogLine:     "info create line items from req body err [{req body 15 0 {\"items\":[],\"extra\":100,\"currency\":\"GBP\",\"message\":\"\",\"email\":\"test@example.com\"} <nil>} {error 26 0  no registry items submitted}]",
 		},
 		{
 			name:           "Payment session fails",
@@ -235,7 +234,7 @@ func Test_CheckoutHandler(t *testing.T) {
 				"",
 			}
 
-			body, statusCode := checkoutHandler(&req, tcs.paymentHandler, &user.User{Username: "test@example.com"}, tcs.regRepo, &logger)
+			body, statusCode := checkoutHandler(&req, tcs.paymentHandler, tcs.regRepo, &logger)
 
 			assert.Equal(t, tcs.expBody, body)
 			assert.Equal(t, tcs.expStatusCode, statusCode)

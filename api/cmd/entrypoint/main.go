@@ -10,10 +10,10 @@ import (
 	"github.com/adzfaulkner/sallyadam/cmd/internal/handler"
 	"github.com/adzfaulkner/sallyadam/internal/cookie"
 	"github.com/adzfaulkner/sallyadam/internal/logger"
+	"github.com/adzfaulkner/sallyadam/internal/password"
 	"github.com/adzfaulkner/sallyadam/internal/payment"
 	"github.com/adzfaulkner/sallyadam/internal/registry"
 	"github.com/adzfaulkner/sallyadam/internal/token"
-	"github.com/adzfaulkner/sallyadam/internal/user"
 	"github.com/aws/aws-lambda-go/lambda"
 )
 
@@ -24,15 +24,10 @@ func main() {
 	successURL := os.Getenv("SUCCESS_URL")
 	cancelURL := os.Getenv("CANCEL_URL")
 	regJSON := os.Getenv("REGISTRY_DATA")
-	usrJSON := os.Getenv("USERS_DATA")
 	cookieDomain := os.Getenv("COOKIE_DOMAIN")
 	cookieSecure := os.Getenv("COOKIE_SECURE")
 	corsAllowedOrigin := os.Getenv("CORS_ALLOWED_ORIGIN")
-
-	usrData, err := base64.StdEncoding.DecodeString(usrJSON)
-	if err != nil {
-		panic(err.Error())
-	}
+	guestPassword := os.Getenv("GUEST_PASSWORD")
 
 	regData, err := base64.StdEncoding.DecodeString(regJSON)
 	if err != nil {
@@ -40,12 +35,6 @@ func main() {
 	}
 
 	expire, err := strconv.Atoi(jwtExpireMins)
-	if err != nil {
-		panic(err.Error())
-	}
-
-	usrRepo, err := user.NewRepository(usrData)
-
 	if err != nil {
 		panic(err.Error())
 	}
@@ -64,13 +53,15 @@ func main() {
 
 	logHandler, err := createLogHandler()
 
+	passwordCheck := password.Compare([]byte(guestPassword))
+
 	if err != nil {
 		panic(err.Error())
 	}
 
 	defer syncLog(logHandler)
 
-	lambda.Start(handler.Handler(usrRepo, regRepo, tokenHandler, paymentHandler, cookieHandler, logHandler, handler.GenerateResponse(corsAllowedOrigin)))
+	lambda.Start(handler.Handler(passwordCheck, regRepo, tokenHandler, paymentHandler, cookieHandler, logHandler, handler.GenerateResponse(corsAllowedOrigin)))
 }
 
 func createLogHandler() (*logger.Handler, error) {

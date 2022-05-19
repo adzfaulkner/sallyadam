@@ -1,39 +1,34 @@
 import axios from 'axios';
 
 const state = {
-    user: {
-        firstname: null,
-        surname: null,
-    },
+    userLoggedIn: false,
     loginError: null,
 };
 
 export const getters = {
-    isAuthenticated: (state) => state.user.firstname !== null && state.user.surname !== null,
-    StateUser: (state) => state.user,
+    isAuthenticated: (state) => state.userLoggedIn,
     LoginError: (state) => state.loginError,
 };
 
 export const actions = {
     async LogIn({commit, dispatch, state}, input) {
-        const { username, password } = input;
-        const json = JSON.stringify({ username, password });
+        const { password } = input;
+        const json = JSON.stringify({ password });
         try {
-            const response = await axios.post("/login", json, {
+            await axios.post("/login", json, {
                 headers: {
                     'Content-Type': 'application/json',
                 }
             });
 
-            const {user} = response.data;
             state.loginError = null;
-            commit("setUser", user);
+            commit("login");
         } catch(e) {
             dispatch("LoginError", "Username or Password is incorrect. Please try again.");
         }
     },
     async Verify({ dispatch, state }) {
-        if (state.user.firstname === null && state.user.surname === null) {
+        if (!state.userLoggedIn) {
             return;
         }
 
@@ -60,11 +55,11 @@ export const actions = {
 };
 
 const mutations = {
-    setUser(state, user) {
-        state.user = user;
+    login(state) {
+        state.userLoggedIn = true;
     },
-    logout(state, user) {
-        state.user = user;
+    logout(state) {
+        state.userLoggedIn = false;
     },
     error(state, error) {
         state.loginError = error;

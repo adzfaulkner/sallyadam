@@ -6,10 +6,10 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestGeneratePassword(t *testing.T) {
+func Test_GeneratePassword(t *testing.T) {
 	t.Parallel()
 
-	pwd := []byte("Testing1234")
+	pwd := []byte("Testing1236")
 
 	res := GeneratePassword(pwd)
 	assert.True(t, len(res) == 60)
@@ -18,15 +18,17 @@ func TestGeneratePassword(t *testing.T) {
 	assert.NotEqual(t, res, res2)
 }
 
-func TestCheckPassword(t *testing.T) {
+func Test_Compare(t *testing.T) {
 	t.Parallel()
 
 	pwd := []byte("Testing1234")
 	hashed := GeneratePassword(pwd)
 
-	res := CheckPassword(pwd, hashed)
+	pwdChecker := Compare(hashed)
+
+	res := pwdChecker(pwd)
 	assert.True(t, res)
 
-	res = CheckPassword([]byte("testing"), hashed)
+	res = pwdChecker([]byte("testing"))
 	assert.False(t, res)
 }

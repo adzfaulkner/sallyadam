@@ -8,6 +8,10 @@
             <a href="javascript://" @click="changes">Make changes</a>
         </div>
         <div class="mb-3">
+          <label class="form-label">Your email address</label>
+          <input type="email" class="form-control" @change="emailUpdated" :value="emailInput" required>
+        </div>
+        <div class="mb-3">
             <label class="form-label">Write a personal message to the hosts (optional)</label>
             <textarea class="form-control" rows="5" @change="messageUpdated" :value="messageInput"></textarea>
         </div>        
@@ -27,6 +31,7 @@
             registryDataMap: Object,
             contributions: Object,
             messageInput: String,
+            emailInput: String,
             willPayFee: Boolean,
         },
         methods: {
@@ -38,7 +43,10 @@
             },
             messageUpdated(e) {
                 this.$emit('messageAdded', e.target.value);
-            }
+            },
+            emailUpdated(e) {
+              this.$emit('emailAdded', e.target.value);
+            },
         }
     };
 </script>

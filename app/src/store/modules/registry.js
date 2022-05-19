@@ -5,6 +5,8 @@ export const COMPONENT_SUCCESS = 'success';
 export const COMPONENT_LIST = 'list';
 export const COMPONENT_CONFIRMATION = 'confirmation';
 export const COMPONENT_REDIRECT_WAIT = 'redirectWait';
+const CURRENCY = "GBP";
+const CURRENCY_SYMBOL = "£";
 
 const STEP_ONE = 'step_one';
 const STEP_TWO = 'step_two';
@@ -20,6 +22,7 @@ const initialState = {
     extra: 0, // step two
     payFee: false, // step two
     message: null, // step two
+    email: null, //step two
     redirectWait: false, // step two
 };
 
@@ -49,7 +52,7 @@ function ContributionsToCurrency(contribs) {
     const contributions = {}
 
     Object.keys(contribs).forEach(key =>{
-        contributions[key] = currency(contribs[key], { fromCents: true, symbol: '£' });
+        contributions[key] = currency(contribs[key], { fromCents: true, symbol: CURRENCY_SYMBOL });
     });
 
     return contributions;
@@ -61,7 +64,7 @@ export const getters = {
     },
     HasContributions: (state) => state.contributionTotal > 0,
     ContributionTotal: (state) => {
-        return currency(state.contributionTotal + state.extra, { fromCents: true, symbol: '£' });
+        return currency(state.contributionTotal + state.extra, { fromCents: true, symbol: CURRENCY_SYMBOL });
     },
     RenderComponent: (state) => {
         const { completedStages, redirectWait } = state;
@@ -84,6 +87,7 @@ export const getters = {
     },
     Message: (state) => state.message,
     PayFee: (state) => state.payFee,
+    Email: (state) => state.email,
 };
 
 export const actions = {
@@ -102,6 +106,9 @@ export const actions = {
     },
     async MessageAdded({commit}, message) {
         await commit("messageAdded", message);
+    },
+    async EmailAdded({commit}, email) {
+        await commit("emailAdded", email);
     },
     async LastStep({commit}) {
         await commit("lastStep");
@@ -129,12 +136,13 @@ export const actions = {
                 });
             }
         }
-        const extra = currency(state.extra, { fromCents: true, symbol: '£' });
+        const extra = currency(state.extra, { fromCents: true, symbol: CURRENCY_SYMBOL });
         const payload = {
             items,
-            currency: "GBP",
+            currency: CURRENCY,
             message: state.message,
-            extra: extra.intValue
+            extra: extra.intValue,
+            email: state.email,
         };
 
         try {
@@ -210,6 +218,9 @@ export const mutations = {
     },
     messageAdded(state, message) {
         state.message = message;
+    },
+    emailAdded(state, email) {
+        state.email = email;
     },
     lastStep(state) {
         const { completedStages } = state;

@@ -20,7 +20,7 @@ jobs:
       COOKIE_DOMAIN: ${{ secrets.COOKIE_DOMAIN }}
       COOKIE_SECURE: ${{ secrets.COOKIE_SECURE }}
       REGISTRY_DATA: ${{ secrets.REGISTRY_DATA }}
-      USERS_DATA: ${{ secrets.USERS_DATA }}
+      GUEST_PASSWORD: ${{ secrets.GUEST_PASSWORD }}
       CORS_ALLOWED_ORIGIN: ${{ secrets.CORS_ALLOWED_ORIGIN }}
     steps:
       - uses: actions/checkout@v2

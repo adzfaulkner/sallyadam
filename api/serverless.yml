@@ -75,7 +75,7 @@ functions:
       JWT_SECRET: ${env:JWT_SECRET}
       JWT_EXPIRE_MINS: ${env:JWT_EXPIRE_MINS}
       REGISTRY_DATA: ${env:REGISTRY_DATA}
-      USERS_DATA: ${env:USERS_DATA}
+      GUEST_PASSWORD: ${env:GUEST_PASSWORD}
       STRIPE_KEY: ${env:STRIPE_KEY}
       SUCCESS_URL: ${env:SUCCESS_URL}
       CANCEL_URL: ${env:CANCEL_URL}

@@ -6,9 +6,9 @@ import (
 	"testing"
 
 	"github.com/adzfaulkner/sallyadam/internal/cookie"
+	"github.com/adzfaulkner/sallyadam/internal/password"
 	"github.com/adzfaulkner/sallyadam/internal/payment"
 	"github.com/adzfaulkner/sallyadam/internal/registry"
-	"github.com/adzfaulkner/sallyadam/internal/user"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/zap"
@@ -44,6 +44,8 @@ func (l *logger) Error(msg string, fields ...zap.Field) {
 
 func Test_MainHandler(t *testing.T) {
 	t.Parallel()
+
+	pwdChecker := password.Compare([]byte(""))
 
 	testCases := []struct {
 		name       string
@@ -138,7 +140,6 @@ func Test_MainHandler(t *testing.T) {
 
 			req, tokenHandler := tcase.setup()
 
-			usrRepo := user.Repository{}
 			regRepo := registry.Repository{}
 			paymentHandler := payment.Handler{}
 			cookieHandler := cookie.Handler{}
@@ -146,7 +147,7 @@ func Test_MainHandler(t *testing.T) {
 				line: "",
 			}
 
-			res, err := Handler(&usrRepo, &regRepo, tokenHandler, &paymentHandler, &cookieHandler, &logHandler, GenerateResponse("http://localhost"))(*req)
+			res, err := Handler(pwdChecker, &regRepo, tokenHandler, &paymentHandler, &cookieHandler, &logHandler, GenerateResponse("http://localhost"))(*req)
 
 			assert.Nil(t, err)
 			assert.Equal(t, tcase.expLogLine, logHandler.line)

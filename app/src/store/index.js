@@ -9,6 +9,6 @@ export const store = createStore({
     registry,
   },
   plugins: [createPersistedState({
-    paths: ["auth.user", "registry"]
+    paths: ["auth.userLoggedIn", "registry"]
   })]
 });
