@@ -47,10 +47,9 @@ describe('Login action tests', () => {
     it('Success login should commit the user', async () => {
         let res = {};
 
-        const commit = (mutation, data) => {
+        const commit = (mutation) => {
             res = {
-                mutation,
-                data,
+                mutation
             };
         };
 
@@ -70,11 +69,7 @@ describe('Login action tests', () => {
         });
 
         assert.deepEqual(res, {
-            mutation: "setUser",
-            data: {
-                firstname: "Testy",
-                surname: "Test",
-            },
+            mutation: "login"
         });
     });
 });
@@ -89,10 +84,7 @@ describe('Verify action tests', () => {
         await actions.Verify({
             dispatch,
             state: {
-                user: {
-                    firstname: null,
-                    surname: null,
-                },
+                userLoggedIn: false,
             }
         });
 
@@ -111,10 +103,7 @@ describe('Verify action tests', () => {
         await actions.Verify({
             dispatch,
             state: {
-                user: {
-                    firstname: 'joe',
-                    surname: 'bloggs',
-                },
+                userLoggedIn: true,
             }
         });
 
@@ -134,10 +123,7 @@ describe('Verify action tests', () => {
         await actions.Verify({
             dispatch,
             state: {
-                user: {
-                    firstname: "joe",
-                    surname: "bloggs",
-                },
+                userLoggedIn: true,
             }
         });
 

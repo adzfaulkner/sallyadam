@@ -43,7 +43,7 @@ serverless_run_command:
             -e COOKIE_SECURE=${COOKIE_SECURE} \
             -e CORS_ALLOWED_ORIGIN=${CORS_ALLOWED_ORIGIN} \
  			-e REGISTRY_DATA=${REGISTRY_DATA} \
- 			-e USERS_DATA=${USERS_DATA} ${IMAGE_TAG_SERVERLESS} ${cmd}
+ 			-e GUEST_PASSWORD=${GUEST_PASSWORD} ${IMAGE_TAG_SERVERLESS} ${cmd}
 
 test_api:
 	docker run -v ${PWD}/api:/go/src/app ${IMAGE_TAG_GO} env CGO_ENABLED=0 go test ${GO_TEST_ARGS}
