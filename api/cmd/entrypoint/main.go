@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/base64"
+	"log"
 	"os"
 	"strconv"
 	"time"
@@ -49,6 +50,8 @@ func main() {
 	ssmsvc := ssm.New(sess, aws.NewConfig().WithRegion(region))
 	secret := getSmmParamVal(ssmsvc, "/SallyAdam/JWT_SECRET")
 	guestPassword := getSmmParamVal(ssmsvc, "/SallyAdam/GUEST_PASSWORD")
+
+	log.Printf("%s %s", secret, guestPassword)
 
 	regData, err := base64.StdEncoding.DecodeString(regJSON)
 	if err != nil {
