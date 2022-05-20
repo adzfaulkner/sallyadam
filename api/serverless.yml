@@ -78,7 +78,6 @@ functions:
   entrypoint:
     handler: bin/entrypoint/bootstrap
     environment:
-      AWS_REGION: ${env:AWS_REGION}
       AWS_ENDPOINT: ${env:AWS_ENDPOINT, ""}
       JWT_EXPIRE_MINS: ${env:JWT_EXPIRE_MINS}
       REGISTRY_DATA: ${env:REGISTRY_DATA}

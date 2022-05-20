@@ -34,7 +34,6 @@ serverless_run_command:
 			-v /app/node_modules \
 			-e AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
 			-e AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
-			-e AWS_REGION=${AWS_REGION} \
 			-e STRIPE_KEY=${STRIPE_KEY} \
             -e JWT_EXPIRE_MINS=${JWT_EXPIRE_MINS} \
             -e SUCCESS_URL=${SUCCESS_URL} \
