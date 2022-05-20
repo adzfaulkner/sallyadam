@@ -34,6 +34,7 @@ serverless_run_command:
 			-v /app/node_modules \
 			-e AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
 			-e AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
+			-e AWS_REGION=${AWS_REGION} \
 			-e STRIPE_KEY=${STRIPE_KEY} \
             -e JWT_EXPIRE_MINS=${JWT_EXPIRE_MINS} \
             -e SUCCESS_URL=${SUCCESS_URL} \
@@ -41,8 +42,7 @@ serverless_run_command:
             -e COOKIE_DOMAIN=${COOKIE_DOMAIN} \
             -e COOKIE_SECURE=${COOKIE_SECURE} \
             -e CORS_ALLOWED_ORIGIN=${CORS_ALLOWED_ORIGIN} \
- 			-e REGISTRY_DATA=${REGISTRY_DATA} \
- 			${IMAGE_TAG_SERVERLESS} ${cmd}
+ 			-e REGISTRY_DATA=${REGISTRY_DATA} ${IMAGE_TAG_SERVERLESS} ${cmd}
 
 test_api:
 	docker run -v ${PWD}/api:/go/src/app ${IMAGE_TAG_GO} env CGO_ENABLED=0 go test ${GO_TEST_ARGS}
