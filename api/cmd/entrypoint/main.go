@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/base64"
-	"fmt"
 	"os"
 	"strconv"
 	"time"
@@ -15,10 +14,14 @@ import (
 	"github.com/adzfaulkner/sallyadam/internal/registry"
 	"github.com/adzfaulkner/sallyadam/internal/token"
 	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/ssm"
 )
 
 func main() {
-	secret := os.Getenv("JWT_SECRET")
+	endpoint := os.Getenv("AWS_ENDPOINT")
+	region := os.Getenv("AWS_REGION")
 	jwtExpireMins := os.Getenv("JWT_EXPIRE_MINS")
 	stripeKey := os.Getenv("STRIPE_KEY")
 	successURL := os.Getenv("SUCCESS_URL")
@@ -27,7 +30,25 @@ func main() {
 	cookieDomain := os.Getenv("COOKIE_DOMAIN")
 	cookieSecure := os.Getenv("COOKIE_SECURE")
 	corsAllowedOrigin := os.Getenv("CORS_ALLOWED_ORIGIN")
-	guestPassword := os.Getenv("GUEST_PASSWORD")
+
+	awsCfg := aws.Config{Region: aws.String(region)}
+
+	if endpoint != "" {
+		awsCfg.Endpoint = aws.String(endpoint)
+	}
+
+	sess, err := session.NewSessionWithOptions(session.Options{
+		Config:            awsCfg,
+		SharedConfigState: session.SharedConfigEnable,
+	})
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	ssmsvc := ssm.New(sess, aws.NewConfig().WithRegion(region))
+	secret := getSmmParamVal(ssmsvc, "/SallyAdam/JWT_SECRET")
+	guestPassword := getSmmParamVal(ssmsvc, "/SallyAdam/GUEST_PASSWORD")
 
 	regData, err := base64.StdEncoding.DecodeString(regJSON)
 	if err != nil {
@@ -51,33 +72,42 @@ func main() {
 
 	cookieHandler := cookie.NewHandler(cookieDomain, cookieSecure == "true")
 
-	logHandler, err := createLogHandler()
-
 	passwordCheck := password.Compare([]byte(guestPassword))
 
-	if err != nil {
-		panic(err.Error())
-	}
+	logHandler := createLogHandler()
 
 	defer syncLog(logHandler)
 
 	lambda.Start(handler.Handler(passwordCheck, regRepo, tokenHandler, paymentHandler, cookieHandler, logHandler, handler.GenerateResponse(corsAllowedOrigin)))
 }
 
-func createLogHandler() (*logger.Handler, error) {
+func createLogHandler() *logger.Handler {
 	zapLog, err := logger.NewZapLogger()
 
 	if err != nil {
-		return nil, fmt.Errorf("zap log returned error: %w", err)
+		panic(err.Error())
 	}
 
 	logHandler := logger.NewHandler(zapLog)
 
-	return logHandler, nil
+	return logHandler
 }
 
 func syncLog(logHandler *logger.Handler) {
 	if err := logHandler.Sync(); err != nil {
 		panic(err.Error())
 	}
+}
+
+func getSmmParamVal(ssmsvc *ssm.SSM, key string) string {
+	param, err := ssmsvc.GetParameter(&ssm.GetParameterInput{
+		Name:           aws.String(key),
+		WithDecryption: aws.Bool(true),
+	})
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	return *param.Parameter.Value
 }

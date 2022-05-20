@@ -3,7 +3,7 @@
         <div class="col-12">
           <div class="container">
             <div class="row mb-4">
-              <div class="col-3 text-end fs-4">13:15</div>
+              <div class="col-3 text-end fs-4">From 13:00</div>
               <div class="col-9 fw-bold fs-4">Guests arrive</div>
             </div>
             <div class="row mt-4 mb-4">

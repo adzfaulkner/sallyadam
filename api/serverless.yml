@@ -24,6 +24,12 @@ provider:
   name: aws
   runtime: go1.x
   region: eu-west-2
+  iam:
+    role:
+      statements:
+        - Effect: 'Allow'
+          Resource: '*'
+          Action: 'ssm:*'
 
 useDotenv: true
 
@@ -72,10 +78,10 @@ functions:
   entrypoint:
     handler: bin/entrypoint/bootstrap
     environment:
-      JWT_SECRET: ${env:JWT_SECRET}
+      AWS_REGION: ${env:AWS_REGION}
+      AWS_ENDPOINT: ${env:AWS_ENDPOINT, ""}
       JWT_EXPIRE_MINS: ${env:JWT_EXPIRE_MINS}
       REGISTRY_DATA: ${env:REGISTRY_DATA}
-      GUEST_PASSWORD: ${env:GUEST_PASSWORD}
       STRIPE_KEY: ${env:STRIPE_KEY}
       SUCCESS_URL: ${env:SUCCESS_URL}
       CANCEL_URL: ${env:CANCEL_URL}

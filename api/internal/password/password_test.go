@@ -14,6 +14,8 @@ func Test_GeneratePassword(t *testing.T) {
 	res := GeneratePassword(pwd)
 	assert.True(t, len(res) == 60)
 
+	t.Log("pwd", string(res))
+
 	res2 := GeneratePassword(pwd)
 	assert.NotEqual(t, res, res2)
 }
