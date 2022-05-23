@@ -1,17 +1,17 @@
 <template>
   <div id="page">
     <site-header @rsvp-click="showModal('rsvp')"></site-header>
-    <section>
+    <section class="section--tree">
       <site-section :title="'The venue'">
         <the-venue></the-venue>
       </site-section>
     </section>
     <section class="section--grey">
-      <site-section :title="'Where to stay'">
+      <site-section :title="'Accommodation'">
         <where-to-stay></where-to-stay>
       </site-section>
     </section>
-    <section>
+    <section class="section--tree">
       <site-section :title="'The proceedings'">
         <the-proceedings></the-proceedings>
       </site-section>

@@ -1,5 +1,13 @@
-@import url(https://fonts.googleapis.com/css?family=Work+Sans:400,300,600,400italic,700);
-@import url(https://fonts.googleapis.com/css?family=Sacramento);
+@font-face {
+  font-family: 'TastyBirds';
+  src: url(fonts/Tasty_Birds.woff) format('woff');
+}
+
+@font-face {
+  font-family: 'Taviraj';
+  src: url(fonts/Taviraj-Medium.ttf.woff) format('woff');
+}
+
 $bootstrap-icons-font-src: url("../node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3")
     format("woff2"),
   url("../node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff?524846017b983fc8ded9325d94ed40f3")
@@ -8,11 +16,15 @@ $bootstrap-icons-font-src: url("../node_modules/bootstrap-icons/font/fonts/boots
 
 @import "../../node_modules/bootstrap/scss/functions";
 
-// customs vars here
-$link-color: #a37c8e;
+$brandGreen: #47a99a;
+$brandGreen2: #82c8bc;
+$brandPurple: #b493b1;
+$brandGrey: #787484;
 
-$secondary: #7fa4c3;
-$primary: $link-color;
+$link-color: $brandPurple;
+
+$secondary: $brandGreen;
+$primary: $brandPurple;
 
 $card-border-width: 0;
 $card-border-radius: 0;
@@ -33,50 +45,16 @@ $container-max-widths: (
 // add bootstrap components at will
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
 
-// site specific css
-body {
-  font-family: "Work Sans";
+body, button, input {
+  font-family: "Taviraj";
+  text-transform: uppercase;
+  color: #787484;
+  letter-spacing: .1rem;
 }
 
 h1,
 h2 {
-  font-family: "Sacramento";
-}
-
-section {
-  padding: map-get($spacers, 5) 0;
-
-  h2 {
-    text-align: center;
-    font-size: 40px;
-    margin-bottom: map-get($spacers, 5);
-  }
-
-  .gmap {
-    width: 100%;
-    height: 400px;
-
-    @include media-breakpoint-up(md) {
-      height: 100%;
-    }
-  }
-}
-
-.section {
-  &--primary {
-    background-color: map-get($theme-colors, "secondary");
-
-    color: $white;
-    h2 {
-      color: $white;
-    }
-  }
-  &--grey {
-    background-color: $gray-200;
-  }
-  .content {
-    max-width: 1000px;
-  }
+  font-family: "TastyBirds";
 }
 
 .rsvp-form {
@@ -123,5 +101,6 @@ section {
 }
 
 @import "./header";
+@import "./section";
 @import "./utils";
 @import "./modal";

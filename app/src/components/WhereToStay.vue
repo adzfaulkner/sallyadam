@@ -24,7 +24,23 @@
             </div>
           </div>
         </div>         
-        <h5 class="mt-3 text-center">For more accommodation suggestions check out the <a href="https://www.farbridge.org.uk/suppliers.html" target="_blank">venue's suppliers</a>.</h5>
+        <h5 class="mt-3 text-center">For more accommodation suggestions check out the <a href="https://www.farbridge.org.uk/suppliers.html" target="_blank">venue's suppliers</a></h5>
+        <h2 class="mt-5 text-center secondary-color">Travel</h2>
+        <div class="row">
+          <div class="col-12">
+            Venue address is as follows:<br/><br/>Farbridge,<br/>Chichester<br/>PO18 0JT<br/><br/>
+            Limited parking is available on-site on a first come, first served basis.<br/><br/>
+            As for Taxis, Uber are in the area!<br/><br/>Failing that there are many local taxi services in and around the Chichester area.<br/><br/>
+            Some of which are:
+            <ul class="mt-3 mb-0">
+              <li>Starline - <a href="tel:+441243 531666">01243 531666</a></li>
+              <li>Premier Cars - <a href="tel:+441243779336">01243 779336</a></li>
+              <li>Station Taxis - <a href="tel:+441243774948">01243 774948</a></li>
+              <li>Dunaways - <a href="tel:+441243782403">01243 782403</a></li>
+              <li>Fairways - <a href="tel:+441243888488">01243 888488</a></li>
+            </ul>
+          </div>
+        </div>
     </div>
 </template>
 
