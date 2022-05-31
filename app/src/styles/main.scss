@@ -38,6 +38,10 @@ $container-max-widths: (
   xxl: 1000px,
 );
 
+$body-color: #787484;
+
+$input-placeholder-color: #A9A9A9;
+
 // required by bootstrap
 @import "../../node_modules/bootstrap/scss/variables";
 @import "../../node_modules/bootstrap/scss/mixins";
@@ -47,9 +51,15 @@ $container-max-widths: (
 
 body, button, input {
   font-family: "Taviraj";
-  text-transform: uppercase;
-  color: #787484;
   letter-spacing: .1rem;
+}
+
+body, button {
+  text-transform: uppercase;
+}
+
+input::placeholder {
+  text-transform: none;
 }
 
 h1,
@@ -96,7 +106,7 @@ h2 {
   padding-bottom: 1em;
   .input-group {
     margin-left: auto;
-    width: 230px;
+    width: 280px;
   }
 }
 

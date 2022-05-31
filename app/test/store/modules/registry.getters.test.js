@@ -1,28 +1,53 @@
 import { assert, test } from 'vitest';
+import currency from "currency.js";
 
 import {
     COMPONENT_CONFIRMATION,
     COMPONENT_LIST, COMPONENT_REDIRECT_WAIT,
     COMPONENT_SUCCESS,
-    getters,
-    STEP_THREE
+    getters, STEP_ONE,
 } from '../../../src/store/modules/registry';
 
-test('Getter Contributions test', () => {
-    let res = getters.Contributions({
-        contributions: {},
-    });
-    assert.isEmpty(res);
-
-    res = getters.Contributions({
-        contributions: {
-            uuid1: 100,
-            uuid2: 200,
+test('Getter StepOne test', () => {
+    const state = {
+        stepOne: {
+            items: [{
+                contribution: null,
+            }, {
+                contribution: 1,
+            }],
         },
+    };
+
+    const res = getters.StepOne(state);
+
+    assert.deepEqual(res,{
+        items: [
+            { contribution: null },
+            { contribution: currency(1, { fromCents: true, symbol: "£" })}
+        ]
     });
-    assert.isObject(res, 2);
-    assert.equal(res.uuid1.intValue, 100);
-    assert.equal(res.uuid2.intValue, 200);
+});
+
+test('Getter StepTwo test', () => {
+    const state = {
+        stepTwo: {
+            items: [{
+                contribution: 1,
+            },{
+                contribution: 2,
+            }],
+        },
+    };
+
+    const res = getters.StepTwo(state);
+
+    assert.deepEqual(res,{
+        items: [
+            { contribution: currency(1, { fromCents: true, symbol: "£" }) },
+            { contribution: currency(2, { fromCents: true, symbol: "£" }) },
+        ]
+    });
 });
 
 test('Getter HasContributions test', () => {
@@ -57,29 +82,29 @@ test('Getter ContributionTotal test', () => {
     assert.equal(2, res.intValue);
 });
 
-
 test('Getter RenderComponent test', () => {
     let res = getters.RenderComponent({
-        completedStages: [],
-        redirectWait: false,
+        redirectWait: true,
     });
-    assert.equal(res, COMPONENT_LIST);
+    assert.equal(res, COMPONENT_REDIRECT_WAIT);
 
     res = getters.RenderComponent({
-        completedStages: [1],
         redirectWait: false,
-    });
-    assert.equal(res, COMPONENT_CONFIRMATION);
-
-    res = getters.RenderComponent({
-        completedStages: [STEP_THREE],
-        redirectWait: false,
+        stepThree: true,
     });
     assert.equal(res, COMPONENT_SUCCESS);
 
     res = getters.RenderComponent({
-        completedStages: [1,2],
-        redirectWait: true,
+        redirectWait: false,
+        stepThree: false,
+        lastStep: STEP_ONE,
     });
-    assert.equal(res, COMPONENT_REDIRECT_WAIT);
+    assert.equal(res, COMPONENT_CONFIRMATION);
+
+    res = getters.RenderComponent({
+        redirectWait: false,
+        stepThree: false,
+        lastStep: null,
+    });
+    assert.equal(res, COMPONENT_LIST);
 });

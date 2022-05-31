@@ -1,5 +1,6 @@
 import { vi, assert, describe, it } from 'vitest';
-import { actions } from '../../../src/store/modules/registry';
+import {actions, STEP_ONE, STEP_TWO} from '../../../src/store/modules/registry';
+import fs from "fs";
 import axios from 'axios';
 
 vi.mock('axios', () => {
@@ -12,10 +13,172 @@ vi.mock('axios', () => {
     }
 });
 
+let validEmails;
+
+try {
+    validEmails = String(fs.readFileSync('./test/store/modules/valid_emails.txt'))
+        .split("\n");
+} catch (e) {
+    validEmails = [
+        'test@example.com',
+        'test@example.co',
+        'test.test@example.com',
+        'test-test@example.com',
+        'test_test@example.com',
+    ];
+}
+
+const invalidEmails = [
+    [null, "Please enter your email"],
+    ["", "Please enter your email"],
+    ["example.com", "Please enter a valid email"],
+    ["test@", "Please enter a valid email"],
+    ["test@.com", "Please enter a valid email"],
+    ["test@.com", "Please enter a valid email"],
+];
+
+describe('Add email address',  () => {
+    it.each(validEmails)('Valid emails should commit the entered email and not commit error message',  async (email) => {
+        const commits = [];
+        const commit = (mutation, val) => {
+            commits.push({
+                mutation,
+                val,
+            });
+        };
+
+        const state = {
+            lastStep: STEP_ONE,
+            stepTwo: {
+                email
+            },
+        };
+
+        await actions.EmailAdded({ commit, state }, email);
+
+        assert.deepEqual(commits, [{
+            mutation: "emailAdded",
+            val: email,
+        },{
+            mutation: "errors",
+            val: {},
+        }]);
+    });
+
+    it.each(invalidEmails)('Invalid emails should commit the entered email and commit a error message',  async (email, error) => {
+        const commits = [];
+        const commit = (mutation, val) => {
+            commits.push({
+                mutation,
+                val,
+            });
+        };
+
+        const state = {
+            lastStep: STEP_ONE,
+            stepTwo: {
+                email
+            },
+        };
+
+        await actions.EmailAdded({ commit, state }, email);
+
+        assert.deepEqual(commits, [{
+            mutation: "emailAdded",
+            val: String(email),
+        },{
+            mutation: "errors",
+            val: {
+                email: error,
+            },
+        }]);
+    });
+});
+
+describe('Next Step',  () => {
+    const passThru = [
+        [{
+            stepOne: {},
+            lastStep: null,
+        }],
+        [{
+            stepTwo: {
+                email: "test@example.com"
+            },
+            lastStep: STEP_ONE,
+        }],
+    ];
+
+    it.each(passThru)('Valid stats that will pass thru dispatch checkout',  async (state) => {
+        const commits = [];
+        const commit = (mutation, val) => {
+            commits.push({
+                mutation,
+                val,
+            });
+        };
+
+        const dispatched = [];
+        const dispatch = (action) => {
+            dispatched.push(action);
+        };
+
+        await actions.NextStep({ state, dispatch, commit });
+
+        assert.deepEqual(commits, [
+            {
+                mutation: "errors",
+                val: {},
+            },
+            {
+                mutation: "nextStep",
+                val: undefined,
+            }
+        ]);
+
+        assert.deepEqual(dispatched, ['Checkout']);
+    });
+
+    it('Step two only validates email and if error will not pass thru',  async () => {
+        const state = {
+            stepTwo: {
+                email: ""
+            },
+            lastStep: STEP_ONE,
+        };
+
+        const commits = [];
+        const commit = (mutation, val) => {
+            commits.push({
+                mutation,
+                val,
+            });
+        };
+
+        const dispatched = [];
+        const dispatch = (action) => {
+            dispatched.push(action);
+        };
+
+        await actions.NextStep({ state, dispatch, commit });
+
+        assert.deepEqual(commits, [
+            {
+                mutation: "errors",
+                val: {
+                    email: "Please enter your email",
+                },
+            }
+        ]);
+
+        assert.lengthOf(dispatched, 0);
+    });
+});
+
 describe('Checkout action tests', () => {
     it('Dispatch / commit should not be fired',  async () => {
         const state = {
-            completedStages: [],
+            lastStep: null,
         };
 
         let dispatchCalled = false;
@@ -71,10 +234,11 @@ describe('Checkout action tests', () => {
         };
 
         await actions.Checkout({ state: {
-                contributions: {},
-                completedStages: ['step_two'],
-                contributionsUuids: [],
-            }, dispatch, commit });
+                stepTwo: {
+                    items: [],
+                },
+                lastStep: STEP_TWO,
+        }, dispatch, commit });
 
         assert.deepEqual(actionsDispatched, ['LogOut', 'LoginError', 'LastStep']);
         assert.deepEqual(committed, [{
@@ -100,9 +264,10 @@ describe('Checkout action tests', () => {
         };
 
         await actions.Checkout({ state: {
-            contributions: {},
-            completedStages: ['step_two'],
-            contributionsUuids: [],
+            stepTwo: {
+                items: [],
+            },
+            lastStep: STEP_TWO,
         }, dispatch, commit });
 
         assert.deepEqual(actionsDispatched, ['LastStep']);

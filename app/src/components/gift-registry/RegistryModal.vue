@@ -7,8 +7,8 @@
        </template>
        <template v-slot:default>
           <login-form v-if="!isAuthenticated" @submitted="login" :loginError="loginError" :submitDisabled="submitDisabled"></login-form>
-          <registry-list v-if="showRegistryList()" :registryData="registryData" @contribute="contribute" :contributions="contributions"></registry-list>
-          <registry-confirmation v-if="showRegistryConfirmation()" :registryData="registryData" :registryDataMap="registryDataMap" :contributions="contributions" :messageInput="message" :emailInput="email" :willPayFee="willPayFee" @payFee="payFee" @messageAdded="messageAdded" @emailAdded="emailAdded" @changes="lastStep"></registry-confirmation>
+          <registry-list v-if="showRegistryList()" :stepOne="stepOne" :errors="registryErrors" @contribute="contribute"></registry-list>
+          <registry-confirmation v-if="showRegistryConfirmation()" :stepTwo="stepTwo" :errors="registryErrors" @payFee="payFee" @messageAdded="messageAdded" @emailAdded="emailAdded" @changes="lastStep"></registry-confirmation>
           <div v-if="showRedirectWait()" class="d-flex align-items-center">
             <strong>Hang tight we will be redirecting you to Stripe payments shortly...</strong>
             <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
@@ -39,13 +39,23 @@
 
   export default {
     name: "RegistryModal",
-    mounted() {
-      if (this.successPayment) {
-        this.$store.dispatch('SuccessfulPayment');
-        return;
-      }
+    beforeCreate() {
+      try {
+        const registryItems = JSON.parse(atob(process.env.VUE_APP_REGISTRY_DATA)).registry;
 
-      this.$store.dispatch('Verify');
+        this.$store.dispatch('InitRegistry', {
+          registryItems
+        });
+
+        if (this.successPayment) {
+          this.$store.dispatch('SuccessfulPayment');
+          return;
+        }
+
+        this.$store.dispatch('Verify');
+      } catch(e) {
+        console.log(e);
+      }
     },
     data() {
       return {
@@ -54,8 +64,6 @@
     },
     props:{
       isGiftRegistryModalVisible: Boolean,
-      registryData: Array,
-      registryDataMap: Object,
       cancelPayment: Boolean,
       successPayment: Boolean,
     },
@@ -70,6 +78,11 @@
         email: "Email",
         willPayFee: "PayFee",
         renderComponent: "RenderComponent",
+        registryItems: "RegistryItems",
+        registryItemsMap: "RegistryItemsMap",
+        stepOne: "StepOne",
+        stepTwo: "StepTwo",
+        registryErrors: "RegistryErrors",
       }),
     },
     components:{
@@ -81,15 +94,16 @@
     methods: {
       ...mapActions([
         "LogOut",
-        "LogIn", 
+        "LogIn",
         "AddContribution",
-        "NextStep", 
-        "PayFee", 
+        "NextStep",
+        "PayFee",
         "MessageAdded",
         "EmailAdded",
         "LastStep",
         "Verify",
         "ResetRegistry",
+        "InitRegistry",
       ]),
       async login(password) {
           this.submitDisabled = true;
