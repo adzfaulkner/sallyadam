@@ -3,7 +3,7 @@
         <div class="col-12">
           <div class="container">
             <div class="row mb-4">
-              <div class="col-12 col-md-4"><img src="@/assets/img/skiing.jpg" class="img-fluid" alt="We are heading to Banff!!" /></div>
+              <div class="col-12 col-md-4"><img src="@/assets/img/ski_2.jpg" class="img-fluid" alt="We are heading to Banff!!" /></div>
               <div class="col-12 col-md-8 mt-3 mt-sm-0">
                 <div class="row">
                   <div class="col-12">

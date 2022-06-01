@@ -11,6 +11,7 @@ setup:
 	make build_docker_image_js
 	make build_docker_image_go
 	make build_api
+	make create_secrets
 	make deploy_api
 
 build_docker_image_js:

@@ -1,26 +1,43 @@
 <template>
     <form>
-        <div class="mb-5">
+        <div class="contribution-summary-container">
             <h5>Contribution summary</h5>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item" v-for="item of stepTwo.items" v-bind:key="item.uuid">{{item.title}} {{item.contribution.format()}}</li>
+            <ul class="list-group list-group-flush mt-3">
+                <li class="list-group-item" v-for="item of stepTwo.items" v-bind:key="item.uuid">
+                  <div class="row">
+                    <div class="col-2 p-0 d-flex align-items-center">
+                      <img src="@/assets/img/spacer-100x100.jpg" class="img-fluid" alt="{{ item.title }}">
+                    </div>
+                    <div class="col-10 d-flex align-items-center">
+                      <div>
+                        <span class="title">{{item.title}}</span>
+                        <span class="amount">Contributing: £{{filterAmount(item.contribution)}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </li>
             </ul>
-            <a href="javascript://" @click="changes">Make changes</a>
+            <div class="mt-3">
+              <a href="javascript://" @click="changes">Make changes</a>
+            </div>
         </div>
-        <div class="mb-3">
-          <label class="form-label">Your email address *</label>
-          <input type="email" :class="hasFieldError(errors, 'email') ? 'form-control is-invalid' : 'form-control'" @change="emailUpdated" :value="stepTwo.email" required>
-          <div v-if="hasFieldError(errors, 'email')" class="invalid-feedback">{{getFieldError(errors, 'email')}}</div>
-        </div>
-        <div class="mb-3">
+        <div class="mt-5">
+          <h5>Lastly some info</h5>
+          <div class="mt-3">
+            <label class="form-label">Your email address *</label>
+            <input type="email" :class="hasFieldError(errors, 'email') ? 'form-control is-invalid' : 'form-control'" @change="emailUpdated" :value="stepTwo.email" required>
+            <div v-if="hasFieldError(errors, 'email')" class="invalid-feedback">{{getFieldError(errors, 'email')}}</div>
+          </div>
+          <div class="mt-3">
             <label class="form-label">Write a personal message to the hosts (optional)</label>
             <textarea class="form-control" rows="5" @change="messageUpdated" :value="stepTwo.message"></textarea>
-        </div>        
-        <div class="form-check">
+          </div>
+          <div class="form-check mt-3">
             <input class="form-check-input" type="checkbox" @click="payFee" :checked="stepTwo.payFee">
             <label class="form-check-label">
-                Please indicate if you are would be happy to pay the transaction fee of 1.4% plus 20p we incur through our chosen payment provider Stripe.
+              Please indicate if you are would be happy to pay the transaction fee of 1.4% plus 20p we incur through our chosen payment provider Stripe.
             </label>
+          </div>
         </div>
     </form>
 </template>
@@ -49,7 +66,18 @@
             },
             getFieldError(errors, field) {
               return this.hasFieldError(errors, field) ? errors[field] : '';
-            }
+            },
+            filterAmount(amount) {
+              if (amount === null) {
+                return '';
+              }
+
+              if (amount.format().substring(amount.format().length - 3) === '.00') {
+                return amount.value;
+              }
+
+              return amount;
+            },
         }
     };
 </script>

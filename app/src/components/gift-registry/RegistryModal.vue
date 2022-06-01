@@ -13,12 +13,15 @@
             <strong>Hang tight we will be redirecting you to Stripe payments shortly...</strong>
             <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
           </div>
-          <div v-if="showPaymentSuccess()">
-            <h1 class="secondary-color mb-3">Many thanks for your contribution</h1>
-            <p>Be rest assured, we will put the funds towards the activities you contributed towards.</p>
-            <p>We look forward to seeing you on our big day!</p>
-            <p>Adam & Sally</p>
-            <button type="button" class="btn btn-primary" @click="registryReset">Back to registry list</button>
+          <div v-if="showPaymentSuccess()" class="col-12">
+            <h1 class="secondary-color text-center">Many thanks for your contribution</h1>
+            <img src="@/assets/img/ski_1.jpg" class="img-fluid mt-4" alt="Many thanks!!" />
+            <div class="mt-4">
+              <p>Be rest assured, we will put the funds towards the activities you contributed towards.</p>
+              <p>We look forward to seeing you on our big day!</p>
+              <p>Adam & Sally</p>
+            </div>
+            <button type="button" class="btn btn-primary mt-3" @click="registryReset">Back to registry list</button>
           </div>
        </template>
        <template v-slot:footer>

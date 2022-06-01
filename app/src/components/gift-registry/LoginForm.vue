@@ -10,7 +10,7 @@
             <label for="pwd" class="form-label">Guest Password</label>
             <input type="password" class="form-control" id="pwd" v-model="form.password" :disabled="submitDisabled">
         </div>
-        <input type="submit" class="btn btn-primary btn-rsvp" :disabled="submitDisabled" value="Submit" />
+        <input type="submit" class="btn btn-primary btn-rsvp" :disabled="submitDisabled" value="SUBMIT" />
     </form>    
 </template>
 <script>

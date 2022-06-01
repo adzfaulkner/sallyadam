@@ -2,7 +2,7 @@
     <header>
       <div class="overlay"></div>
       <div class="container">
-        <div class="col-xs-12">
+        <div class="col-12">
           <h1>Sally <span>&amp;</span> Adam</h1>
           <h2>Are getting married on<br/>Sunday 2nd October 2022</h2>
           <date-ticker></date-ticker>
