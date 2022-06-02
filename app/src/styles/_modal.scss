@@ -25,8 +25,15 @@
   &-footer {
     border-top: 0;
   }
-  &-open {
-    overflow: hidden;
-    padding-right: 0px;
+}
+
+body.modal-open {
+  overflow: hidden;
+  padding-right: 0;
+}
+
+@supports (-webkit-touch-callout: none) {
+  body.modal-open {
+    position: fixed;
   }
 }
