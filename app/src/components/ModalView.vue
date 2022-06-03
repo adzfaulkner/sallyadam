@@ -3,7 +3,7 @@
         <div :class="className">
             <div class="modal-backdrop"></div>
             <div class="modal">
-                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen-sm-down">
                     <div class="modal-content">
                         <div class="modal-header">
                             <slot name="header"></slot>

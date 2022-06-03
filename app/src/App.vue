@@ -67,25 +67,31 @@
     mounted() {
       if (this.cancelPayment || this.successPayment) {
         this.$router.push("/");
-        this.showRegsitryModal();
+        this.showRegistryModal();
       }
     },
     methods: {
       showRSVPModal() {
         this.isRSVPModalVisible = true;
-        document.body.classList.add('modal-open')
+        this.modalOpen();
       },
       closeRSVPModal() {
         this.isRSVPModalVisible = false;
-        document.body.classList.remove('modal-open')
+        this.modalClose();
       },
-      showRegsitryModal() {
+      showRegistryModal() {
         this.isGiftRegistryModalVisible = true;
-        document.body.classList.add('modal-open')
+        this.modalOpen();
       },
       closeRegistryModal() {
         this.isGiftRegistryModalVisible = false;
-        document.body.classList.remove('modal-open')
+        this.modalClose();
+      },
+      modalOpen() {
+        document.body.classList.add('modal-open');
+      },
+      modalClose() {
+        document.body.classList.remove('modal-open');
       },
       showModal(modal) {
         switch(modal) {
@@ -93,7 +99,7 @@
             this.showRSVPModal();
             return;
           case 'registry':
-            this.showRegsitryModal();
+            this.showRegistryModal();
             return;
         }
       }

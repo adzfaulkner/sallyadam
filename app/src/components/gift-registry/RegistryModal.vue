@@ -9,9 +9,11 @@
           <login-form v-if="!isAuthenticated" @submitted="login" :loginError="loginError" :submitDisabled="submitDisabled"></login-form>
           <registry-list v-if="showRegistryList()" :stepOne="stepOne" :errors="registryErrors" @contribute="contribute"></registry-list>
           <registry-confirmation v-if="showRegistryConfirmation()" :stepTwo="stepTwo" :errors="registryErrors" @payFee="payFee" @messageAdded="messageAdded" @emailAdded="emailAdded" @changes="lastStep"></registry-confirmation>
-          <div v-if="showRedirectWait()" class="d-flex align-items-center">
-            <strong>Hang tight we will be redirecting you to Stripe payments shortly...</strong>
-            <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
+          <div v-if="showRedirectWait()" class="text-center">
+            <h5>Please Hang tight<br/><br/>We will be redirecting you to the checkout in a jiffy ...</h5>
+            <div class="spinner-border mt-5" style="width:5rem; height:5rem;" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
           </div>
           <div v-if="showPaymentSuccess()" class="col-12">
             <h1 class="secondary-color text-center">Many thanks for your contribution</h1>
@@ -143,7 +145,6 @@
       },
       close() {
         this.$emit('close');
-        this.$el.querySelector('.modal-body').scrollTo(0, 0);
       },
       showModalTitle() {
         return this.isAuthenticated && [COMPONENT_REDIRECT_WAIT, COMPONENT_SUCCESS].indexOf(this.renderComponent) < 0;
