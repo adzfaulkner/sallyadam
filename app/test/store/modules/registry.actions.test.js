@@ -274,8 +274,6 @@ describe('Checkout action tests', () => {
         assert.equal(window.location, "http://test");
         assert.deepEqual(committed, [{
             redirectWait: true
-        }, {
-            redirectWait: false
         }]);
     });
 });
