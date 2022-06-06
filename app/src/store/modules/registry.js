@@ -176,6 +176,9 @@ export const actions = {
     async InitRegistry({commit, state: { initialized }}, {registryItems}) {
         //removed when ready
         await commit("reset");
+        //
+
+        await commit('redirectWait', false);
 
         if (initialized) {
             return;
@@ -252,7 +255,9 @@ export const actions = {
             const {url} = response.data;
             window.location = url;
             dispatch("LastStep");
-            await commit('redirectWait', false);
+            addEventListener('popstate', async () => {
+                await commit('redirectWait', false);
+            });
         } catch (e) {
             await commit('redirectWait', false);
 

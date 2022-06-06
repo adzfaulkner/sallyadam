@@ -4,8 +4,8 @@
           <div class="card">
             <img src="@/assets/img/selsey-arms.jpg" class="card-img-top" alt="Selsey Arms">
             <div class="card-body">
-              <h5 class="card-title fw-bold">The Selsey Arms</h5>
-              <p class="card-text">
+              <h5 class="card-title fw-bold text-center">The Selsey Arms</h5>
+              <p class="card-text text-center">
                 <a class="btn btn-primary btn-sm m-1" href="https://www.selseyarms-westdean.co.uk" target="_blank"><i class="bi bi-globe"></i> Website</a>
                 <a class="btn btn-primary btn-sm m-1" href="https://g.page/the-selsey-arms-west-dean?share" target="_blank"><i class="bi bi-map"></i> Google maps</a>
               </p>
@@ -16,8 +16,8 @@
           <div class="card mt-4 mt-sm-4 mt-md-0">
             <img src="@/assets/img/fox-runs-free.jpg" class="card-img-top" alt="Fox Runs Free">
             <div class="card-body">
-              <h5 class="card-title fw-bold">Fox Runs Free</h5>
-              <p class="card-text">
+              <h5 class="card-title fw-bold text-center">Fox Runs Free</h5>
+              <p class="card-text text-center">
                 <a class="btn btn-primary btn-sm m-1" href="https://www.thefoxgoesfree.com" target="_blank"><i class="bi bi-globe"></i> Website</a>
                 <a class="btn btn-primary btn-sm m-1" href="https://goo.gl/maps/1V8qYXpm3fyDugu88" target="_blank"><i class="bi bi-map"></i> Google maps</a>
               </p>
