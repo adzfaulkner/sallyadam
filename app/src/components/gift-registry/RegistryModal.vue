@@ -28,7 +28,7 @@
        </template>
        <template v-slot:footer>
          <form v-if="showModalFooter()" @submit.prevent="submit">
-            <label class="me-3 col-form-label">Total: £<span>{{contributionTotal}}</span></label> 
+            <label class="me-3 col-form-label">Total: £<span :class="{ 'total-updated': animateTotal }">{{contributionTotal}}</span></label>
             <button type="button" class="btn btn-primary" :disabled="!hasContributions" @click="nextStep">Proceed</button>
          </form>
        </template>
@@ -65,6 +65,7 @@
     data() {
       return {
         submitDisabled: false,
+        animateTotal: false,
       }
     },
     props:{
@@ -122,6 +123,11 @@
           uuid,
           amount
         });
+
+        this.animateTotal = true;
+        setTimeout(() => {
+          this.animateTotal = false;
+        }, 1000)
       },
       async nextStep() {
         await this.NextStep();
