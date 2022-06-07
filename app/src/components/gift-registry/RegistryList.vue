@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="card" v-for="item of stepOne.items" v-bind:key="item.uuid">
-            <img src="@/assets/img/spacer.jpg" class="card-img-top" alt="{{ item.title }}">
+            <img :src="generateImgPath(item.images.list)" class="card-img-top" alt="{{ item.title }}" rel="preload">
             <div class="card-body">
                 <h5 class="card-title">{{ item.title }}</h5>
                 <p class="card-text">{{ item.description }}</p>
@@ -40,6 +40,10 @@
             addContribution(uuid) {
                 this.$emit('contribute', uuid, currency(this.$refs[uuid][0].value, {symbol: '£'}));
             },
+            generateImgPath(img) {
+              const images = require.context('@/assets/img/', false, /\.jpg$/)
+              return images('./' + img);
+            }
         }
     };
 </script>

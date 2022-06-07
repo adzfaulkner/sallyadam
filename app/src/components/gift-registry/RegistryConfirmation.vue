@@ -1,12 +1,12 @@
 <template>
     <form>
         <div class="contribution-summary-container">
-            <h5>Contribution summary</h5>
+            <h5>Your contributions</h5>
             <ul class="list-group list-group-flush mt-3">
                 <li class="list-group-item" v-for="item of stepTwo.items" v-bind:key="item.uuid">
                   <div class="row">
                     <div class="col-2 p-0 d-flex align-items-center">
-                      <img src="@/assets/img/spacer-100x100.jpg" class="img-fluid" alt="{{ item.title }}">
+                      <img :src="generateImgPath(item.images.checkout)" class="img-fluid" alt="{{ item.title }}">
                     </div>
                     <div class="col-10 d-flex align-items-center">
                       <div>
@@ -78,6 +78,10 @@
 
               return amount;
             },
+            generateImgPath(img) {
+              const images = require.context('@/assets/img/', false, /\.jpg$/)
+              return images('./' + img);
+            }
         }
     };
 </script>

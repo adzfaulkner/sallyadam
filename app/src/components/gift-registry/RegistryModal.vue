@@ -127,7 +127,7 @@
         this.animateTotal = true;
         setTimeout(() => {
           this.animateTotal = false;
-        }, 1000)
+        }, 1000);
       },
       async nextStep() {
         await this.NextStep();
