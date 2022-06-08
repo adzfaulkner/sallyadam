@@ -41,8 +41,7 @@ serverless_run_command:
             -e CANCEL_URL=${CANCEL_URL} \
             -e COOKIE_DOMAIN=${COOKIE_DOMAIN} \
             -e COOKIE_SECURE=${COOKIE_SECURE} \
-            -e CORS_ALLOWED_ORIGIN=${CORS_ALLOWED_ORIGIN} \
- 			-e REGISTRY_DATA=${REGISTRY_DATA} ${IMAGE_TAG_SERVERLESS} ${cmd}
+            -e CORS_ALLOWED_ORIGIN=${CORS_ALLOWED_ORIGIN} ${IMAGE_TAG_SERVERLESS} ${cmd}
 
 test_api:
 	docker run -v ${PWD}/api:/go/src/app ${IMAGE_TAG_GO} env CGO_ENABLED=0 go test ${GO_TEST_ARGS}
@@ -58,16 +57,13 @@ build_api:
 	docker run -v ${PWD}/api:/go/src/app:rw -w /go/src/app/cmd/entrypoint ${IMAGE_TAG_GO} sh -c 'GOOS=linux CGO_ENABLED=0 go build -o ../../bin/entrypoint/bootstrap .'
 
 deploy_api:
-	sh bin/amend_env.sh
 	cd api/ && serverless deploy --stage ${SERVERLESS_STAGE} --region eu-west-2
 
 deploy_func_entrypoint:
-	sh bin/amend_env.sh
 	cd api/ && serverless deploy function --function=entrypoint \
 		--stage ${SERVERLESS_STAGE} --region eu-west-2
 
 fe-up:
-	sh bin/amend_env.sh
 	cd app/ && npm run serve
 
 tests_fe:
@@ -108,18 +104,7 @@ delete-item-session:
 		--key '{"Token":{"S":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2NDg5ODgwMjgsInVzZXJfaWQiOiI4ZWU1NDczNS02NGViLTQzYzktOWYyZi02ZmNkNjIwMDI1NzIifQ.GNVhPEpXyDRwc-vvPI2SCFzY_6-9T01yDKSxdExA8L0"},"User":{"S":"8ee54735-64eb-43c9-9f2f-6fcd62002572"}}'
 
 create_secrets:
-	aws --endpoint-url=http://localhost:4566 \
-		ssm put-parameter \
-		--name "/SallyAdam/GUEST_PASSWORD" \
-		--type "SecureString" \
-		--value '$$2a$$04$$i04jRj2yEzWqsW3gWfuPU.0WKdQ6sUYu617nESTOIq2CgRPf9gSs2' \
-		--overwrite
-	aws --endpoint-url=http://localhost:4566 \
-		ssm put-parameter \
-		--name "/SallyAdam/JWT_SECRET" \
-		--type "SecureString" \
-		--value "0f1b47cafe2f645b7cda198936372a99cc630999b1c1caebf895aa00bf30bb0a" \
-		--overwrite
+	sh bin/create_secrets.sh
 
 #######################
 # CI Specific targets #

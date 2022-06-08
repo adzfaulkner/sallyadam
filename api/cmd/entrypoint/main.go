@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/base64"
 	"os"
 	"strconv"
 	"time"
@@ -26,7 +25,6 @@ func main() {
 	stripeKey := os.Getenv("STRIPE_KEY")
 	successURL := os.Getenv("SUCCESS_URL")
 	cancelURL := os.Getenv("CANCEL_URL")
-	regJSON := os.Getenv("REGISTRY_DATA")
 	cookieDomain := os.Getenv("COOKIE_DOMAIN")
 	cookieSecure := os.Getenv("COOKIE_SECURE")
 	corsAllowedOrigin := os.Getenv("CORS_ALLOWED_ORIGIN")
@@ -50,17 +48,14 @@ func main() {
 	secret := getSmmParamVal(ssmsvc, "/SallyAdam/JWT_SECRET")
 	guestPassword := getSmmParamVal(ssmsvc, "/SallyAdam/GUEST_PASSWORD")
 
-	regData, err := base64.StdEncoding.DecodeString(regJSON)
-	if err != nil {
-		panic(err.Error())
-	}
+	regData := getSmmParamVal(ssmsvc, "/SallyAdam/REGISTRY_DATA")
 
 	expire, err := strconv.Atoi(jwtExpireMins)
 	if err != nil {
 		panic(err.Error())
 	}
 
-	regRepo, err := registry.NewRepository(regData)
+	regRepo, err := registry.NewRepository([]byte(regData))
 
 	if err != nil {
 		panic(err.Error())

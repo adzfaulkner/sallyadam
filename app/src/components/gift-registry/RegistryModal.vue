@@ -41,12 +41,13 @@
   import RegistryList from './RegistryList.vue';
   import { mapActions, mapGetters } from "vuex";
   import { COMPONENT_CONFIRMATION, COMPONENT_SUCCESS, COMPONENT_LIST, COMPONENT_REDIRECT_WAIT } from "@/store/modules/registry";
+  import regData from '../../assets/registry.json';
 
   export default {
     name: "RegistryModal",
     beforeCreate() {
       try {
-        const registryItems = JSON.parse(atob(process.env.VUE_APP_REGISTRY_DATA)).registry;
+        const registryItems = regData.registry;
 
         this.$store.dispatch('InitRegistry', {
           registryItems
