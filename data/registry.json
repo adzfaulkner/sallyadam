@@ -7,7 +7,7 @@
 				"checkout": "sunshine_mountain_lodge-checkout.jpg",
 				"stripe": "sunshine_mountain_lodge-stripe.jpg"
 			},
-			"description": "The only \"ski in ski out\" resort in Banff. We will be staying for 5 nights indulging in plenty of skiing during the day and will be either relaxing in our Deluxe Waterfall room after a hard da's shift or in the jacuzzi etc."
+			"description": "The only \"ski in ski out\" resort in Banff. We will be staying for 5 nights indulging in plenty of skiing during the day and will be either relaxing in our Deluxe Waterfall room after a hard day's shift on the slopes or in the jacuzzi!"
 		},
 		{
 			"uuid": "214581f4-79d4-418a-8c92-90942c75935d",
@@ -17,7 +17,7 @@
 				"checkout": "mount_royal-checkout.jpg",
 				"stripe": "mount_royal-stripe.jpg"
 			},
-			"description": "This is in fact our first point of call! After a grueling 12+ hours travel time, we will stay here for 9 nights and we plan to make several trips to Lake Louise."
+			"description": "This is in fact our first point of call! After a grueling 12+ hours travel time, we will stay here for 9 nights and use it as a base whilst we ski and find many adventures in the Canadian Rockies."
 		},
 		{
 			"uuid": "12774116-b58c-4e48-b6c8-28a791f02488",
@@ -27,7 +27,47 @@
 				"checkout": "equipment-checkout.jpg",
 				"stripe": "equipment-stripe.jpg"
 			},
-			"description": "We don't own ski's nor the slopes are not free therefore we will be hiring equipment and paying for various passes to enable us to access Banff's numerous ski slopes such as Sunshine, Lake Louise etc"
+			"description": "We don't own ski's nor the slopes are free! Therefore we will be hiring equipment and paying for various passes to enable us to access Banff's ski slopes Sunshine, Lake Louise & Norquay."
+		},
+		{
+			"uuid": "ea1e9125-9e86-4753-bee5-9b7cc6fce93c",
+			"title": "Dog Sledding",
+			"images": {
+				"list": "dog_sled-list.jpg",
+				"checkout": "dog_sled-checkout.jpg",
+				"stripe": "dog_sled-stripe.jpg"
+			},
+			"description": "TBC"
+		},
+		{
+			"uuid": "d1d63146-ac8b-4658-9d98-be9e08700c01",
+			"title": "Johnson Canyon Ice Walk",
+			"images": {
+				"list": "ice_walk-list.jpg",
+				"checkout": "ice_walk-checkout.jpg",
+				"stripe": "ice_walk-stripe.jpg"
+			},
+			"description": "TBC"
+		},
+		{
+			"uuid": "38761078-c7b5-4ad0-892a-2d42b923230d",
+			"title": "Banff Upper Hot Springs",
+			"images": {
+				"list": "hot_springs-list.jpg",
+				"checkout": "hot_springs-checkout.jpg",
+				"stripe": "hot_springs-stripe.jpg"
+			},
+			"description": "TBC"
+		},
+		{
+			"uuid": "a336809c-3f82-4fad-b3d9-4987addc27dc",
+			"title": "Afternoon Tea",
+			"images": {
+				"list": "afternoon_tea-list.jpg",
+				"checkout": "afternoon_tea-checkout.jpg",
+				"stripe": "afternoon_tea-stripe.jpg"
+			},
+			"description": "Afternoon Tea at Fairmont chateau, Lake Louise"
 		},
 		{
 			"uuid": "7d1f9125-8b3c-4200-8790-521b5e856610",
@@ -37,7 +77,7 @@
 				"checkout": "calgary-checkout.jpg",
 				"stripe": "calgary-stripe.jpg"
 			},
-			"description": "We finish our honeymoon with a 3 night stay in Calgary."
+			"description": "We finish up our honeymoon in Calgary. We will spend time relaxing, shopping and visiting many of the local attractions such as the Wonderland Sculpture, Calgary Tower & the Historic Village."
 		}
 	]
 }
