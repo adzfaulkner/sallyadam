@@ -1,5 +1,6 @@
 {
-	"registry": [{
+	"registry": [
+		{
 			"uuid": "2a702053-1a0f-4e2f-8f18-91d1516ffe0f",
 			"title": "Sunshine Mountain Lodge",
 			"images": {
@@ -31,13 +32,13 @@
 		},
 		{
 			"uuid": "ea1e9125-9e86-4753-bee5-9b7cc6fce93c",
-			"title": "Dog Sledding",
+			"title": "Great Divide Dogsled Tour",
 			"images": {
 				"list": "dog_sled-list.jpg",
 				"checkout": "dog_sled-checkout.jpg",
 				"stripe": "dog_sled-stripe.jpg"
 			},
-			"description": "TBC"
+			"description": "Another adventure which will make great memories. This is a 1.5hr dog sledging tour along the Continental Divide in Lake Louise and we travel approximately 16km."
 		},
 		{
 			"uuid": "d1d63146-ac8b-4658-9d98-be9e08700c01",
@@ -47,7 +48,7 @@
 				"checkout": "ice_walk-checkout.jpg",
 				"stripe": "ice_walk-stripe.jpg"
 			},
-			"description": "TBC"
+			"description": "We love walking and this tour allows us to explore ice-covered waterfalls and beautiful scenery of Johnson Canyon in Banff. This is a half-day tour which will take us through to the upper falls which is a 30m high waterfall (hopefully frozen). "
 		},
 		{
 			"uuid": "38761078-c7b5-4ad0-892a-2d42b923230d",

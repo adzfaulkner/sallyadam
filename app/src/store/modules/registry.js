@@ -14,12 +14,12 @@ const FEE_PER = 0.014; // 1.4%
 const FEE_PENCE = 20; // 20p
 
 const initialState = {
-    initialized: false,
     lastStep: null,
     stepOne: {
         items: [],
         itemsMap: {},
         errors: {},
+        contributions: {},
     },
     stepTwo: {
         items: [],
@@ -173,24 +173,17 @@ export const getters = {
 };
 
 export const actions = {
-    async InitRegistry({commit, state: { initialized }}, {registryItems}) {
-        //removed when ready
-        await commit("reset");
-        //
-
-        await commit('redirectWait', false);
-
-        if (initialized) {
-            return;
-        }
-
+    async InitRegistry({commit, dispatch}, {registryItems}) {
         await commit("init", { registryItems });
+        await commit("updateContributionTotal");
+        dispatch("NextStep");
     },
     async ResetRegistry({commit}) {
         await commit("reset");
     },
     async AddContribution({commit}, input) {
         await commit("addContribution", input);
+        await commit("updateContributionTotal");
     },
     async NextStep({commit, dispatch, state}) {
         const errors = helper.Validate(state);
@@ -204,6 +197,7 @@ export const actions = {
     },
     async PayFee({commit}, decision) {
         await commit("payFee", decision);
+        await commit("updateContributionTotal");
     },
     async MessageAdded({commit}, message) {
         await commit("messageAdded", message);
@@ -255,9 +249,6 @@ export const actions = {
             const {url} = response.data;
             window.location = url;
             dispatch("LastStep");
-            addEventListener('popstate', async () => {
-                await commit('redirectWait', false);
-            });
         } catch (e) {
             await commit('redirectWait', false);
 
@@ -281,14 +272,15 @@ export const mutations = {
         const { stepOne } = state;
 
         const map = {};
+        let uuid;
         for (const index in registryItems) {
-            registryItems[index].contribution = null;
-            map[registryItems[index].uuid] = index;
+            uuid = registryItems[index].uuid;
+            registryItems[index].contribution = uuid in stepOne.contributions ? stepOne.contributions[uuid] :  null;
+            map[uuid] = index;
         }
 
         stepOne.items = registryItems;
 
-        state.initialized = true;
         state.stepOne = {
             ...state.stepOne,
             items: registryItems,
@@ -310,7 +302,7 @@ export const mutations = {
         Object.assign(state, resetState);
     },
     addContribution(state, input) {
-        const { stepOne, stepTwo } = state;
+        const { stepOne } = state;
         const { uuid, amount } = input;
 
         const index = stepOne.itemsMap[uuid];
@@ -319,15 +311,23 @@ export const mutations = {
         ];
         items[index].contribution = amount.intValue;
 
-        const payFee = stepTwo.payFee;
+        const contributions = {
+            ...stepOne.contributions
+        };
 
-        state.contributionTotal = helper.CalculateTotal(items);
-        state.extra = helper.CalculateExtra(payFee, state.contributionTotal);
+        contributions[uuid] = amount.intValue;
 
         state.stepOne = {
             ...stepOne,
-            items
+            items,
+            contributions,
         };
+    },
+    updateContributionTotal(state) {
+        const {stepOne, stepTwo} = state;
+
+        state.contributionTotal = helper.CalculateTotal(stepOne.items);
+        state.extra = helper.CalculateExtra(stepTwo.payFee, state.contributionTotal);
     },
     nextStep(state) {
         if (!getters.HasContributions(state)) {
@@ -357,7 +357,6 @@ export const mutations = {
     payFee(state, decision) {
         const payFee = decision === true;
 
-        state.extra = helper.CalculateExtra(payFee, state.contributionTotal);
         state.stepTwo = {
             ...state.stepTwo,
             payFee

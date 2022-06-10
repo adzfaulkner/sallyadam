@@ -120,12 +120,11 @@
           this.submitDisabled = false;
       },
       async contribute(uuid, amount) {
+        this.animateTotal = true;
         await this.AddContribution({
           uuid,
           amount
         });
-
-        this.animateTotal = true;
         setTimeout(() => {
           this.animateTotal = false;
         }, 1000);
@@ -135,7 +134,11 @@
         this.$el.querySelector('.modal-body').scrollTo(0, 0);
       },
       async payFee(decision) {
+        this.animateTotal = true;
         await this.PayFee(decision);
+        setTimeout(async () => {
+          this.animateTotal = false;
+        }, 1000);
       },
       async messageAdded(message) {
         await this.MessageAdded(message);

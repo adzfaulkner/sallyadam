@@ -1,11 +1,8 @@
-import { assert, test } from 'vitest';
-
+import { assert, test, describe, it } from 'vitest';
 import {mutations, STEP_ONE, STEP_TWO} from '../../../src/store/modules/registry';
 
 test('addContribution mutation test without payfee', () => {
     const state = {
-        contributionTotal: 0,
-        extra: 0,
         stepOne: {
             items: [
                 { contribution: null },
@@ -31,8 +28,6 @@ test('addContribution mutation test without payfee', () => {
     mutations.addContribution(state, input);
 
     assert.equal(state.stepOne.items[0].contribution, 100);
-    assert.equal(state.contributionTotal, 100);
-    assert.equal(state.extra, 0);
 
     input = {
         uuid: 'uuid1',
@@ -44,8 +39,6 @@ test('addContribution mutation test without payfee', () => {
     mutations.addContribution(state, input);
 
     assert.equal(state.stepOne.items[0].contribution, 200);
-    assert.equal(state.contributionTotal, 200);
-    assert.equal(state.extra, 0);
 
     input = {
         uuid: 'uuid2',
@@ -58,8 +51,6 @@ test('addContribution mutation test without payfee', () => {
 
     assert.equal(state.stepOne.items[0].contribution, 200);
     assert.equal(state.stepOne.items[1].contribution, 300);
-    assert.equal(state.contributionTotal, 500);
-    assert.equal(state.extra, 0);
 });
 
 test('addContribution mutation test with payfee', () => {
@@ -91,8 +82,6 @@ test('addContribution mutation test with payfee', () => {
     mutations.addContribution(state, input);
 
     assert.equal(state.stepOne.items[0].contribution, 100);
-    assert.equal(state.contributionTotal, 100);
-    assert.equal(state.extra, 21.4);
 
     input = {
         uuid: 'uuid1',
@@ -104,8 +93,6 @@ test('addContribution mutation test with payfee', () => {
     mutations.addContribution(state, input);
 
     assert.equal(state.stepOne.items[0].contribution, 200);
-    assert.equal(state.contributionTotal, 200);
-    assert.equal(state.extra, 22.8);
 
     input = {
         uuid: 'uuid2',
@@ -118,8 +105,6 @@ test('addContribution mutation test with payfee', () => {
 
     assert.equal(state.stepOne.items[0].contribution, 200);
     assert.equal(state.stepOne.items[1].contribution, 300);
-    assert.equal(state.contributionTotal, 500);
-    assert.equal(state.extra, 27);
 });
 
 test('nextStep mutation test', () => {
@@ -185,26 +170,15 @@ test('nextStep mutation test', () => {
 test('payFee mutation test', () => {
     const state = {
         stepTwo: { payFee: false },
-        extra: 0,
-        contributionTotal: 0,
     };
 
     mutations.payFee(state, false);
 
     assert.isFalse(state.stepTwo.payFee);
-    assert.equal(state.extra, 0);
-
-    state.contributionTotal = 100;
 
     mutations.payFee(state, true);
 
     assert.isTrue(state.stepTwo.payFee);
-    assert.equal(state.extra, 21.4);
-
-    mutations.payFee(state, false);
-
-    assert.isFalse(state.stepTwo.payFee);
-    assert.equal(state.extra, 0);
 });
 
 test('lastStep mutation test', () => {
@@ -228,3 +202,97 @@ test('lastStep mutation test', () => {
 
     assert.equal(state.lastStep, STEP_ONE);
 });
+
+describe('init mutation',  () => {
+    it('should init', function () {
+        const state = {
+            stepOne: {
+                items: [],
+                itemsMap: {},
+                contributions: {},
+            },
+        };
+
+        mutations.init(state,{
+            registryItems: []
+        });
+
+        assert.deepEqual(state.stepOne.items, []);
+        assert.deepEqual(state.stepOne.itemsMap, {});
+    });
+
+    it('should init with contribution vals', function () {
+        const state = {
+            stepOne: {
+                items: [],
+                itemsMap: {},
+                contributions: {
+                    2: 100,
+                },
+            },
+        };
+
+        mutations.init(state,{
+            registryItems: [{
+                uuid: 1
+            },{
+                uuid: 2
+            }]
+        });
+
+        assert.deepEqual(state.stepOne.items, [{
+            uuid: 1,
+            contribution: null,
+        },{
+            uuid: 2,
+            contribution: 100,
+        }]);
+
+        assert.deepEqual(state.stepOne.itemsMap, {
+            1: "0",
+            2: "1",
+        });
+    });
+});
+
+describe('updateContributionTotal mutation',  () => {
+    const sums = [
+        [0, false, 0, 0],
+        [100, false, 100, 0],
+        [100, true, 100, 21.4],
+        [500, false, 500, 0],
+        [500, true, 500, 27],
+        [1000, false, 1000, 0],
+        [1000, true, 1000, 34],
+        [1500, false, 1500, 0],
+        [1500, true, 1500, 41],
+        [2000, false, 2000, 0],
+        [2000, true, 2000, 48],
+        [2500, false, 2500, 0],
+        [2500, true, 2500, 55],
+        [3000, false, 3000, 0],
+        [3000, true, 3000, 62],
+    ];
+
+    it.each(sums)('should update contribution total', function (
+        contribution, payFee,expTotal, expExtra
+    ) {
+        const state = {
+            stepOne: {
+                items: [{contribution}],
+            },
+            stepTwo: {
+                payFee,
+            },
+            contributionTotal: 0,
+            extra: 0,
+        };
+
+        mutations.updateContributionTotal(state);
+
+        assert.equal(state.contributionTotal, expTotal);
+        assert.equal(state.extra, expExtra);
+    });
+});
+
+

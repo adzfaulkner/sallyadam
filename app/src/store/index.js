@@ -9,6 +9,12 @@ export const store = createStore({
     registry,
   },
   plugins: [createPersistedState({
-    paths: ["auth.userLoggedIn", "registry"]
+    paths: [
+        "auth.userLoggedIn",
+        "registry.stepOne.contributions",
+        "registry.stepTwo.email",
+        "registry.stepTwo.payFee",
+        "registry.stepTwo.message",
+    ]
   })]
 });
