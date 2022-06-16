@@ -40,7 +40,7 @@ const state = {
 
 const helper = {
     CalculateExtra: (payFee, total) => {
-        if (!payFee) {
+        if (!payFee || total === 0) {
             return 0;
         }
 

@@ -1,7 +1,7 @@
 import { assert, test, describe, it } from 'vitest';
 import {mutations, STEP_ONE, STEP_TWO} from '../../../src/store/modules/registry';
 
-test('addContribution mutation test without payfee', () => {
+test('addContribution mutation test', () => {
     const state = {
         stepOne: {
             items: [
@@ -13,63 +13,6 @@ test('addContribution mutation test without payfee', () => {
                 uuid2: 1,
             },
         },
-        stepTwo: {
-            payFee: false,
-        },
-    };
-
-    let input = {
-        uuid: 'uuid1',
-        amount: {
-            intValue: 100,
-        },
-    };
-
-    mutations.addContribution(state, input);
-
-    assert.equal(state.stepOne.items[0].contribution, 100);
-
-    input = {
-        uuid: 'uuid1',
-        amount: {
-            intValue: 200,
-        },
-    };
-
-    mutations.addContribution(state, input);
-
-    assert.equal(state.stepOne.items[0].contribution, 200);
-
-    input = {
-        uuid: 'uuid2',
-        amount: {
-            intValue: 300,
-        },
-    };
-
-    mutations.addContribution(state, input);
-
-    assert.equal(state.stepOne.items[0].contribution, 200);
-    assert.equal(state.stepOne.items[1].contribution, 300);
-});
-
-test('addContribution mutation test with payfee', () => {
-    const state = {
-        stepOne: {
-            items: [
-                { contribution: null },
-                { contribution: null },
-            ],
-            itemsMap: {
-                uuid1: 0,
-                uuid2: 1,
-            },
-        },
-        stepTwo: {
-            payFee: true,
-        },
-        contributionTotal: 0,
-        extra: 0,
     };
 
     let input = {
@@ -258,6 +201,7 @@ describe('init mutation',  () => {
 describe('updateContributionTotal mutation',  () => {
     const sums = [
         [0, false, 0, 0],
+        [0, true, 0, 0],
         [100, false, 100, 0],
         [100, true, 100, 21.4],
         [500, false, 500, 0],
