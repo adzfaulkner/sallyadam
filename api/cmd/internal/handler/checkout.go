@@ -16,7 +16,7 @@ type regRepo interface {
 }
 
 type paymentHandler interface {
-	CreateSession(items []payment.LineItem, currency, email string) (*payment.CreateSessionResult, error)
+	CreateSession(items []payment.LineItem, currency, email, message string) (*payment.CreateSessionResult, error)
 }
 
 type item struct {
@@ -55,7 +55,7 @@ func checkoutHandler(request *events.APIGatewayProxyRequest, paymentHandler paym
 		return generateGenericResponse("Invalid request"), http.StatusBadRequest
 	}
 
-	res, err := paymentHandler.CreateSession(items, cur, reqBody.Email)
+	res, err := paymentHandler.CreateSession(items, cur, reqBody.Email, reqBody.Message)
 
 	if err != nil {
 		logHandler.Error("could not create stripe payment session", zap.Error(err))

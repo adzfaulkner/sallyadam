@@ -37,7 +37,7 @@ type paymentHandlerMock struct {
 	ReturnError bool
 }
 
-func (p *paymentHandlerMock) CreateSession(items []payment.LineItem, currency, email string) (*payment.CreateSessionResult, error) {
+func (p *paymentHandlerMock) CreateSession(items []payment.LineItem, currency, email, message string) (*payment.CreateSessionResult, error) {
 	if p.ReturnError {
 		return nil, fmt.Errorf("CreateSession error")
 	}

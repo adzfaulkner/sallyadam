@@ -112,7 +112,7 @@ func Test_HandlerCreateSession(t *testing.T) {
 				},
 			}
 
-			res, err := sut.CreateSession(items, "GBP", "info@example.com")
+			res, err := sut.CreateSession(items, "GBP", "info@example.com", "test message")
 
 			errMsg := ""
 			if err != nil {

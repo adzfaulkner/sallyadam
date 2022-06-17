@@ -64,7 +64,7 @@ type Handler struct {
 	cancelURL     string
 }
 
-func (c *Handler) CreateSession(items []LineItem, currency, email string) (*CreateSessionResult, error) {
+func (c *Handler) CreateSession(items []LineItem, currency, email, message string) (*CreateSessionResult, error) {
 	stripe.Key = c.key
 
 	params := &stripe.CheckoutSessionParams{
@@ -73,6 +73,9 @@ func (c *Handler) CreateSession(items []LineItem, currency, email string) (*Crea
 		CustomerEmail: &email,
 		LineItems:     createLineItems(items, currency),
 		Mode:          stripe.String(string(stripe.CheckoutSessionModePayment)),
+		PaymentIntentData: &stripe.CheckoutSessionPaymentIntentDataParams{Metadata: map[string]string{
+			"message": message,
+		}},
 	}
 
 	sess, err := c.createSession(params)

@@ -8,7 +8,7 @@
             </div>
             <form class="mb-4 text-end">
               <label class="col-form-label me-2 fw-bolder">Contribute?</label>
-              <select class="form-select d-inline w-auto" :ref="item.uuid" @change="() => addContribution(item.uuid)">
+              <select class="form-select d-inline w-auto form-select-lg" :ref="item.uuid" @change="() => addContribution(item.uuid)">
                 <option v-for="(val) in increments" :key=val :selected="val === filterAmount(item.contribution)">£{{val}}</option>
               </select>
             </form>
