@@ -57,6 +57,8 @@ test('nextStep mutation test', () => {
         },
         stepTwo: {
             items: [],
+            payFee: false,
+            payFeeAutoApplied: false,
         },
         contributionTotal: 0,
         lastStep: null,
@@ -105,7 +107,9 @@ test('nextStep mutation test', () => {
         stepTwo: {
             items: [{
                 contribution: 1,
-            }]
+            }],
+            payFee: true,
+            payFeeAutoApplied: true,
         },
     }, state);
 });
@@ -239,4 +243,32 @@ describe('updateContributionTotal mutation',  () => {
     });
 });
 
+test('pay fee auto applied', () => {
+    const state = {
+        stepOne: {
+            items: [],
+        },
+        stepTwo: {
+            items: [],
+            payFee: false,
+            payFeeAutoApplied: false,
+        },
+        lastStep: null,
+        contributionTotal: 1,
+    };
 
+    mutations.nextStep(state);
+
+    assert.isTrue(state.stepTwo.payFee);
+    assert.isTrue(state.stepTwo.payFeeAutoApplied);
+
+    state.stepTwo = {
+        ...state.stepTwo,
+        payFee: false,
+    };
+
+    mutations.nextStep(state);
+
+    assert.isFalse(state.stepTwo.payFee);
+    assert.isTrue(state.stepTwo.payFeeAutoApplied);
+});

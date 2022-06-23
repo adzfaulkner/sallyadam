@@ -24,6 +24,7 @@ const initialState = {
     stepTwo: {
         items: [],
         email: "",
+        payFeeAutoApplied: false,
         payFee: false,
         message: null,
         errors: {},
@@ -192,6 +193,7 @@ export const actions = {
 
         if (Object.keys(errors).length === 0) {
             await commit("nextStep");
+            await commit("updateContributionTotal");
             dispatch("Checkout");
         }
     },
@@ -348,10 +350,14 @@ export const mutations = {
             }
         }
 
+        const payFee = stepTwo.payFeeAutoApplied === false ? true : stepTwo.payFee;
+
         state.lastStep = STEP_ONE;
         state.stepTwo = {
             ...stepTwo,
-            items
+            items,
+            payFee,
+            payFeeAutoApplied: true,
         };
     },
     payFee(state, decision) {

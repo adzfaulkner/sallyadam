@@ -35,7 +35,7 @@
           <div class="form-check mt-3">
             <input class="form-check-input" type="checkbox" @click="payFee" :checked="stepTwo.payFee">
             <label class="form-check-label">
-              Please indicate if you are willing to pay the transaction fee of 1.4% plus 20p we incur through our chosen payment provider Stripe.
+              INCLUDE PAYMENT PROVIDER  FEES (1.4% PLUS 20P).
             </label>
           </div>
         </div>

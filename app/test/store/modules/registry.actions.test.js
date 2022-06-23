@@ -133,6 +133,10 @@ describe('Next Step',  () => {
             {
                 mutation: "nextStep",
                 val: undefined,
+            },
+            {
+                mutation: "updateContributionTotal",
+                val: undefined,
             }
         ]);
 
