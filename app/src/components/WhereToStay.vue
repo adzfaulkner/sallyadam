@@ -24,10 +24,10 @@
             </div>
           </div>
         </div>         
-        <h5 class="mt-3 text-center">For more accommodation suggestions check out the <a href="https://www.farbridge.org.uk/suppliers.html" target="_blank">venue's suppliers</a></h5>
+        <h5 class="mt-3 text-center text-transform-none">For more accommodation suggestions check out the <a href="https://www.farbridge.org.uk/suppliers.html" target="_blank">venue's suppliers</a></h5>
         <h2 class="mt-5 text-center secondary-color">Travel</h2>
         <div class="row">
-          <div class="col-12">
+          <div class="col-12 text-transform-none">
             Venue address is as follows:<br/><br/>Farbridge,<br/>Chichester<br/>PO18 0JT<br/><br/>
             Limited parking is available on-site on a first come, first served basis.<br/><br/>
             As for Taxis, Uber are in the area!<br/><br/>Failing that there are many local taxi services in and around the Chichester area.<br/><br/>

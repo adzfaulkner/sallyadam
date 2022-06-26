@@ -11,7 +11,7 @@
                     <div class="col-10 d-flex align-items-center">
                       <div>
                         <span class="title">{{item.title}}</span>
-                        <span class="amount">Contributing: £{{filterAmount(item.contribution)}}</span>
+                        <span class="amount text-transform-none">Contributing: £{{filterAmount(item.contribution)}}</span>
                       </div>
                     </div>
                   </div>
@@ -24,18 +24,18 @@
         <div class="mt-5">
           <h5>Lastly some info</h5>
           <div class="mt-3">
-            <label class="form-label">Your email address *</label>
+            <label class="form-label text-transform-none">Your email address *</label>
             <input type="email" :class="hasFieldError(errors, 'email') ? 'form-control is-invalid' : 'form-control'" @change="emailUpdated" :value="stepTwo.email" required>
-            <div v-if="hasFieldError(errors, 'email')" class="invalid-feedback">{{getFieldError(errors, 'email')}}</div>
+            <div v-if="hasFieldError(errors, 'email')" class="invalid-feedback text-transform-none">{{getFieldError(errors, 'email')}}</div>
           </div>
           <div class="mt-3">
-            <label class="form-label">Write a personal message to the hosts (optional)</label>
+            <label class="form-label text-transform-none">Write a personal message to the hosts (optional)</label>
             <textarea class="form-control" rows="5" @change="messageUpdated" :value="stepTwo.message"></textarea>
           </div>
           <div class="form-check mt-3">
             <input class="form-check-input" type="checkbox" @click="payFee" :checked="stepTwo.payFee">
-            <label class="form-check-label">
-              INCLUDE PAYMENT PROVIDER  FEES (1.4% PLUS 20P).
+            <label class="form-check-label text-transform-none">
+              Include payment provider fees (1.4% plus 20P).
             </label>
           </div>
         </div>

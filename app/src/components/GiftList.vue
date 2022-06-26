@@ -6,12 +6,12 @@
               <div class="col-12 col-md-4"><img src="@/assets/img/ski_2.jpg" class="img-fluid" alt="We are heading to Banff!!" /></div>
               <div class="col-12 col-md-8 mt-3 mt-md-0">
                 <div class="row">
-                  <div class="col-12">
+                  <div class="col-12 text-transform-none">
                     We would be absolutely delighted if our guests would contribute to our honeymoon via the Gift Registry that can be accessed by clicking the button below.
                   </div>
                   <div class="col-12 mt-4">
                     <div class="text-center alert alert-warning fw-bold" role="alert">
-                      Guest passwords will be sent out via email out in due course.
+                      Guest passwords will be sent out via email in due course.
                     </div>
                   </div>
                   <div class="col-12 text-center mt-4">
