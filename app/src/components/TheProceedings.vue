@@ -1,7 +1,7 @@
 <template>
     <div class="row">
         <div class="col-12">
-          <div class="container">
+          <div class="container taviraj-font-family text-uppercase">
             <div class="row mb-4">
               <div class="col-3 text-end fs-4">13:00</div>
               <div class="col-9 fw-bold fs-4 secondary-color">Guests arrive</div>

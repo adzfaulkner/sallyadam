@@ -11,7 +11,7 @@
           <registry-confirmation v-if="showRegistryConfirmation()" :stepTwo="stepTwo" :errors="registryErrors" @payFee="payFee" @messageAdded="messageAdded" @emailAdded="emailAdded" @changes="lastStep"></registry-confirmation>
           <div v-if="showRedirectWait()" class="text-center">
             <h5>Please Hang tight</h5>
-            <p class="text-transform-none">We will be redirecting you to the checkout in a jiffy ...</p>
+            <p>We will be redirecting you to the checkout in a jiffy ...</p>
             <div class="spinner-border mt-5" style="width:5rem; height:5rem;" role="status">
               <span class="visually-hidden">Loading...</span>
             </div>
@@ -20,9 +20,9 @@
             <h1 class="secondary-color text-center">Many thanks for your contribution</h1>
             <img src="@/assets/img/ski_1.jpg" class="img-fluid mt-4" alt="Many thanks!!" />
             <div class="mt-4">
-              <p class="text-transform-none">Be rest assured, we will put the funds towards the activities you contributed towards.</p>
-              <p class="text-transform-none">We look forward to seeing you on our big day!</p>
-              <p class="text-transform-none">Adam & Sally</p>
+              <p>Be rest assured, we will put the funds towards the activities you contributed towards.</p>
+              <p>We look forward to seeing you on our big day!</p>
+              <p>Adam & Sally</p>
             </div>
             <button type="button" class="btn btn-primary mt-3" @click="registryReset">Back to registry list</button>
           </div>

@@ -10,31 +10,31 @@
                     </div>
                     <div class="col-10 d-flex align-items-center">
                       <div>
-                        <span class="title">{{item.title}}</span>
-                        <span class="amount text-transform-none">Contributing: £{{filterAmount(item.contribution)}}</span>
+                        <h6>{{item.title}}</h6>
+                        <span class="amount taviraj-font-family">Contributing: <span class="system-ui-font-family">£{{filterAmount(item.contribution)}}</span></span>
                       </div>
                     </div>
                   </div>
                 </li>
             </ul>
             <div class="mt-3">
-              <a href="javascript://" @click="changes">Make changes</a>
+              <a href="javascript://" @click="changes" class="text-uppercase">Make changes</a>
             </div>
         </div>
         <div class="mt-5">
           <h5>Lastly some info</h5>
           <div class="mt-3">
-            <label class="form-label text-transform-none">Your email address *</label>
+            <label class="form-label">Your email address *</label>
             <input type="email" :class="hasFieldError(errors, 'email') ? 'form-control is-invalid' : 'form-control'" @change="emailUpdated" :value="stepTwo.email" required>
-            <div v-if="hasFieldError(errors, 'email')" class="invalid-feedback text-transform-none">{{getFieldError(errors, 'email')}}</div>
+            <div v-if="hasFieldError(errors, 'email')" class="invalid-feedback taviraj-font-family">{{getFieldError(errors, 'email')}}</div>
           </div>
           <div class="mt-3">
-            <label class="form-label text-transform-none">Write a personal message to the hosts (optional)</label>
+            <label class="form-label">Write a personal message to the hosts (optional)</label>
             <textarea class="form-control" rows="5" @change="messageUpdated" :value="stepTwo.message"></textarea>
           </div>
           <div class="form-check mt-3">
             <input class="form-check-input" type="checkbox" @click="payFee" :checked="stepTwo.payFee">
-            <label class="form-check-label text-transform-none">
+            <label class="form-check-label">
               Include payment provider fees (1.4% plus 20P).
             </label>
           </div>
