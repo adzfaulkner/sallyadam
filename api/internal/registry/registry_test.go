@@ -12,15 +12,19 @@ func TestNewRepository(t *testing.T) {
 
 	exp := []Item{
 		{
-			UUID:        "UUID1",
-			Title:       "TITLE1",
-			Image:       "IMAGE1",
+			UUID:  "UUID1",
+			Title: "TITLE1",
+			Images: Images{
+				Stripe: "IMAGE1",
+			},
 			Description: "DESCRIPTION1",
 		},
 		{
-			UUID:        "UUID2",
-			Title:       "TITLE2",
-			Image:       "IMAGE2",
+			UUID:  "UUID2",
+			Title: "TITLE2",
+			Images: Images{
+				Stripe: "IMAGE2",
+			},
 			Description: "DESCRIPTION2",
 		},
 	}
@@ -30,8 +34,8 @@ func TestNewRepository(t *testing.T) {
 		"UUID2": 1,
 	}
 
-	item1 := fmt.Sprintf("%q:%q,%q:%q,%q:%q,%q:%q", "uuid", "UUID1", "title", "TITLE1", "image", "IMAGE1", "description", "DESCRIPTION1")
-	item2 := fmt.Sprintf("%q:%q,%q:%q,%q:%q,%q:%q", "uuid", "UUID2", "title", "TITLE2", "image", "IMAGE2", "description", "DESCRIPTION2")
+	item1 := fmt.Sprintf("%q:%q,%q:%q,%q:{%q:%q},%q:%q", "uuid", "UUID1", "title", "TITLE1", "images", "stripe", "IMAGE1", "description", "DESCRIPTION1")
+	item2 := fmt.Sprintf("%q:%q,%q:%q,%q:{%q:%q},%q:%q", "uuid", "UUID2", "title", "TITLE2", "images", "stripe", "IMAGE2", "description", "DESCRIPTION2")
 	json := []byte(fmt.Sprintf("{%q:[{%s},{%s}]}", "registry", item1, item2))
 
 	repo, _ := NewRepository(json)
@@ -43,9 +47,11 @@ func TestFindById(t *testing.T) {
 	t.Parallel()
 
 	item := Item{
-		UUID:        "UUID1",
-		Title:       "TITLE1",
-		Image:       "IMAGE1",
+		UUID:  "UUID1",
+		Title: "TITLE1",
+		Images: Images{
+			Stripe: "IMAGE1",
+		},
 		Description: "DESCRIPTION1",
 	}
 

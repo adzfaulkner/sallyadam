@@ -9,6 +9,7 @@ import (
 
 type LineItem struct {
 	Title    string
+	Image    string
 	Amount   int64
 	Quantity int64
 }
@@ -39,14 +40,23 @@ func createLineItems(items []LineItem, currency string) []*stripe.CheckoutSessio
 		amount := item.Amount
 		title := item.Title
 		quantity := item.Quantity
+		image := item.Image
+
+		prodData := stripe.CheckoutSessionLineItemPriceDataProductDataParams{
+			Name: &title,
+		}
+
+		if image != "" {
+			prodData.Images = []*string{
+				&image,
+			}
+		}
 
 		lineItem := &stripe.CheckoutSessionLineItemParams{
 			PriceData: &stripe.CheckoutSessionLineItemPriceDataParams{
-				Currency: &currency,
-				ProductData: &stripe.CheckoutSessionLineItemPriceDataProductDataParams{
-					Name: &title,
-				},
-				UnitAmount: &amount,
+				Currency:    &currency,
+				ProductData: &prodData,
+				UnitAmount:  &amount,
 			},
 			Quantity: &quantity,
 		}

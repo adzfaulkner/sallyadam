@@ -26,9 +26,11 @@ func (r *regRepoMock) FindByID(id string) (*registry.ID, *registry.Item) { //nol
 	ID := registry.ID(usrID)
 
 	return &ID, &registry.Item{
-		UUID:        uuid,
-		Title:       title,
-		Image:       "",
+		UUID:  uuid,
+		Title: title,
+		Images: registry.Images{
+			Stripe: "",
+		},
 		Description: "",
 	}
 }

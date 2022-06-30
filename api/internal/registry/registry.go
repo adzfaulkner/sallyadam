@@ -5,10 +5,14 @@ import (
 	"fmt"
 )
 
+type Images struct {
+	Stripe string `json:"stripe"`
+}
+
 type Item struct {
 	UUID        string `json:"uuid"`
 	Title       string `json:"title"`
-	Image       string `json:"image"`
+	Images      Images `json:"images"`
 	Description string `json:"description"`
 }
 

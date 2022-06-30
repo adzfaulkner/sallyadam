@@ -97,6 +97,7 @@ func createLineItems(items []item, extra int64, regRepo regRepo) ([]payment.Line
 			Title:    regItm.Title,
 			Amount:   itm.Amount,
 			Quantity: quantity,
+			Image:    regItm.Images.Stripe,
 		}
 
 		res = append(res, lineItem)
@@ -107,6 +108,7 @@ func createLineItems(items []item, extra int64, regRepo regRepo) ([]payment.Line
 			Title:    "Extra donation",
 			Amount:   extra,
 			Quantity: quantity,
+			Image:    "",
 		}
 
 		res = append(res, lineItem)
