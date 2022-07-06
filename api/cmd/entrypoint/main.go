@@ -22,7 +22,6 @@ func main() {
 	endpoint := os.Getenv("AWS_ENDPOINT")
 	region := os.Getenv("AWS_REGION")
 	jwtExpireMins := os.Getenv("JWT_EXPIRE_MINS")
-	stripeKey := os.Getenv("STRIPE_KEY")
 	successURL := os.Getenv("SUCCESS_URL")
 	cancelURL := os.Getenv("CANCEL_URL")
 	cookieDomain := os.Getenv("COOKIE_DOMAIN")
@@ -45,10 +44,11 @@ func main() {
 	}
 
 	ssmsvc := ssm.New(sess, aws.NewConfig().WithRegion(region))
+
 	secret := getSmmParamVal(ssmsvc, "/SallyAdam/JWT_SECRET")
 	guestPassword := getSmmParamVal(ssmsvc, "/SallyAdam/GUEST_PASSWORD")
-
 	regData := getSmmParamVal(ssmsvc, "/SallyAdam/REGISTRY_DATA")
+	stripeKey := getSmmParamVal(ssmsvc, "/SallyAdam/STRIPE_KEY")
 
 	expire, err := strconv.Atoi(jwtExpireMins)
 	if err != nil {

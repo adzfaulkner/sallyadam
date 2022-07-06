@@ -2,6 +2,8 @@
 
 REGISTRY_DATA_PARAM=$(cat ./app/src/assets/registry.json)
 
+export $(cat ./api/.env.local | grep -v '#' | sed 's/\r$//' | awk '/=/ {print $1}' )
+
 aws --endpoint-url=http://localhost:4566 \
   ssm put-parameter \
   --name "/SallyAdam/GUEST_PASSWORD" \
@@ -13,7 +15,7 @@ aws --endpoint-url=http://localhost:4566 \
   ssm put-parameter \
   --name "/SallyAdam/JWT_SECRET" \
   --type "SecureString" \
-  --value "0f1b47cafe2f645b7cda198936372a99cc630999b1c1caebf895aa00bf30bb0a" \
+  --value ${JWT_SECRET} \
   --overwrite
 
 aws --endpoint-url=http://localhost:4566 \
@@ -21,4 +23,11 @@ aws --endpoint-url=http://localhost:4566 \
   --name "/SallyAdam/REGISTRY_DATA" \
   --type "SecureString" \
   --value "${REGISTRY_DATA_PARAM}" \
+  --overwrite
+
+aws --endpoint-url=http://localhost:4566 \
+  ssm put-parameter \
+  --name "/SallyAdam/STRIPE_KEY" \
+  --type "SecureString" \
+  --value "${STRIPE_KEY}" \
   --overwrite

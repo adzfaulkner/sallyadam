@@ -35,7 +35,6 @@ serverless_run_command:
 			-v /app/node_modules \
 			-e AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
 			-e AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
-			-e STRIPE_KEY=${STRIPE_KEY} \
             -e JWT_EXPIRE_MINS=${JWT_EXPIRE_MINS} \
             -e SUCCESS_URL=${SUCCESS_URL} \
             -e CANCEL_URL=${CANCEL_URL} \
@@ -118,7 +117,7 @@ ci_build_api:
 	make build_api
 
 ci_deploy_api:
-	make serverless_run_command cmd='serverless deploy --stage prod --region eu-west-2 --verbose'
+	make serverless_run_command cmd='serverless deploy function --function=entrypoint --stage prod --region eu-west-2 --verbose --force --update-config'
 
 ci_tests_fe:
 	make js_run_command cmd='npm run test:run'
