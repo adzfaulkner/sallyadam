@@ -117,7 +117,7 @@ ci_build_api:
 	make build_api
 
 ci_deploy_api:
-	make serverless_run_command cmd='serverless deploy function --function=entrypoint --stage prod --region eu-west-2 --verbose --force --update-config'
+	make serverless_run_command cmd='serverless deploy --stage prod --region eu-west-2 --verbose'
 
 ci_tests_fe:
 	make js_run_command cmd='npm run test:run'
