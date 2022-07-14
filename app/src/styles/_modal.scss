@@ -35,5 +35,6 @@ body.modal-open {
 @supports (-webkit-touch-callout: none) {
   body.modal-open {
     position: fixed;
+    width: 100%;
   }
 }
