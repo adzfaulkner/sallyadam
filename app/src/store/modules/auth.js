@@ -24,7 +24,7 @@ export const actions = {
             state.loginError = null;
             commit("login");
         } catch(e) {
-            dispatch("LoginError", "Username or Password is incorrect. Please try again.");
+            dispatch("LoginError", "Invalid credentials. Please try again.");
         }
     },
     async Verify({ dispatch, state }) {

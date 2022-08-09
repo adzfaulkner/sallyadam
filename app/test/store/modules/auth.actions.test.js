@@ -40,7 +40,7 @@ describe('Login action tests', () => {
 
         assert.deepEqual(res, {
             action: "LoginError",
-            msg: "Username or Password is incorrect. Please try again.",
+            msg: "Invalid credentials. Please try again.",
         });
     });
 
