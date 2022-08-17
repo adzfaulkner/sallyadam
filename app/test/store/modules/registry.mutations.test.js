@@ -1,5 +1,6 @@
 import { assert, test, describe, it } from 'vitest';
 import {mutations, STEP_ONE, STEP_TWO} from '../../../src/store/modules/registry';
+import currency from "currency.js";
 
 test('addContribution mutation test', () => {
     const state = {
@@ -204,26 +205,50 @@ describe('init mutation',  () => {
 
 describe('updateContributionTotal mutation',  () => {
     const sums = [
-        [0, false, 0, 0],
-        [0, true, 0, 0],
-        [100, false, 100, 0],
-        [100, true, 100, 21.4],
-        [500, false, 500, 0],
-        [500, true, 500, 27],
-        [1000, false, 1000, 0],
-        [1000, true, 1000, 34],
-        [1500, false, 1500, 0],
-        [1500, true, 1500, 41],
-        [2000, false, 2000, 0],
-        [2000, true, 2000, 48],
-        [2500, false, 2500, 0],
-        [2500, true, 2500, 55],
-        [3000, false, 3000, 0],
-        [3000, true, 3000, 62],
+        [0, false, 0],
+        [0, true, 0],
+        [500, false, 0],
+        [500, true, 27],
+        [1000, false, 0],
+        [1000, true, 34],
+        [1500, false, 0],
+        [1500, true, 42],
+        [2000, false, 0],
+        [2000, true, 49],
+        [2500, false, 0],
+        [2500, true, 56],
+        [3000, false, 0],
+        [3000, true, 63],
+        [3500, false, 0],
+        [3500, true, 70],
+        [4000, false, 0],
+        [4000, true, 77],
+        [5000, false, 0],
+        [5000, true, 91],
+        [5500, false, 0],
+        [5500, true, 98],
+        [6000, false, 0],
+        [6000, true, 105],
+        [6500, false, 0],
+        [6500, true, 113],
+        [7000, false, 0],
+        [7000, true, 120],
+        [7500, false, 0],
+        [7500, true, 127],
+        [8000, false, 0],
+        [8000, true, 134],
+        [8500, false, 0],
+        [8500, true, 141],
+        [9000, false, 0],
+        [9000, true, 148],
+        [9500, false, 0],
+        [9500, true, 155],
+        [10000, false, 0],
+        [10000, true, 162],
     ];
 
     it.each(sums)('should update contribution total', function (
-        contribution, payFee,expTotal, expExtra
+        contribution, payFee, expExtra
     ) {
         const state = {
             stepOne: {
@@ -238,8 +263,8 @@ describe('updateContributionTotal mutation',  () => {
 
         mutations.updateContributionTotal(state);
 
-        assert.equal(state.contributionTotal, expTotal);
-        assert.equal(state.extra, expExtra);
+        assert.equal(state.contributionTotal, contribution);
+        assert.equal(currency(state.extra, { fromCents: true, symbol: "£" }).intValue, expExtra);
     });
 });
 

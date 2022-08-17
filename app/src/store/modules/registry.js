@@ -10,7 +10,7 @@ const CURRENCY_SYMBOL = "£";
 
 export const STEP_ONE = 'step_one';
 export const STEP_TWO = 'step_two';
-const FEE_PER = 0.014; // 1.4%
+const FEE_PER = 1.4;
 const FEE_PENCE = 20; // 20p
 
 const initialState = {
@@ -45,7 +45,9 @@ const helper = {
             return 0;
         }
 
-        return (total * FEE_PER) + FEE_PENCE;
+        const incFee = (total + FEE_PENCE) / (1 - FEE_PER / 100);
+
+        return incFee - total;
     },
     CalculateTotal: (items) => {
         let total = 0;
