@@ -13,6 +13,8 @@ export const STEP_TWO = 'step_two';
 const FEE_PER = 1.4;
 const FEE_PENCE = 20; // 20p
 
+const MESSAGE_CHAR_LIMIT = 500;
+
 const initialState = {
     lastStep: null,
     stepOne: {
@@ -87,7 +89,7 @@ const helper = {
                 errors.email = "Please enter a valid email";
             }
 
-            if (String(message).length > 500) {
+            if (String(message).length > MESSAGE_CHAR_LIMIT) {
                 errors.message = "Please keep your message to under 500 chars long";
             }
         }
@@ -160,6 +162,9 @@ export const getters = {
 
         return {};
     },
+    HasErrors: (state) => {
+        return Object.keys(getters.RegistryErrors(state)).length > 0;
+    },
     RenderComponent: (state) => {
         const { lastStep, stepThree, redirectWait } = state;
 
@@ -177,6 +182,9 @@ export const getters = {
 
         return COMPONENT_LIST;
     },
+    MessageCharLimit: () => {
+        return MESSAGE_CHAR_LIMIT;
+    }
 };
 
 export const actions = {
@@ -208,7 +216,7 @@ export const actions = {
         await commit("updateContributionTotal");
     },
     async MessageAdded({commit, state}, message) {
-        message = String(message).trim();
+        message = String(message);
 
         await commit("messageAdded", message);
         await commit("errors", helper.Validate(state));
@@ -245,7 +253,7 @@ export const actions = {
         const payload = {
             items,
             currency: CURRENCY,
-            message: stepTwo.message,
+            message: String(stepTwo.message).trim(),
             extra: ext.intValue,
             email: stepTwo.email,
         };

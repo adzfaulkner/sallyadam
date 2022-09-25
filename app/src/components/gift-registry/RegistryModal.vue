@@ -8,7 +8,7 @@
        <template v-slot:default>
           <login-form v-if="!isAuthenticated" @submitted="login" :loginError="loginError" :submitDisabled="submitDisabled"></login-form>
           <registry-list v-if="showRegistryList()" :stepOne="stepOne" :errors="registryErrors" @contribute="contribute"></registry-list>
-          <registry-confirmation v-if="showRegistryConfirmation()" :stepTwo="stepTwo" :errors="registryErrors" @payFee="payFee" @messageAdded="messageAdded" @emailAdded="emailAdded" @changes="lastStep"></registry-confirmation>
+          <registry-confirmation v-if="showRegistryConfirmation()" :stepTwo="stepTwo" :errors="registryErrors" :messageCharLimit="messageCharLimit" @payFee="payFee" @messageAdded="messageAdded" @emailAdded="emailAdded" @changes="lastStep"></registry-confirmation>
           <div v-if="showRedirectWait()" class="text-center">
             <h5>Please Hang tight</h5>
             <p>We will be redirecting you to the checkout in a jiffy ...</p>
@@ -30,7 +30,7 @@
        <template v-slot:footer>
          <form v-if="showModalFooter()" @submit.prevent="submit">
             <label class="me-3 col-form-label">Total: £<span :class="{ 'total-updated': animateTotal }">{{contributionTotal}}</span></label>
-            <button type="button" class="btn btn-primary" :disabled="!hasContributions" @click="nextStep">Proceed</button>
+            <button type="button" class="btn btn-primary" :disabled="!hasContributions || hasRegistryErrors" @click="nextStep">Proceed</button>
          </form>
        </template>
   </modal-view>
@@ -91,6 +91,8 @@
         stepOne: "StepOne",
         stepTwo: "StepTwo",
         registryErrors: "RegistryErrors",
+        messageCharLimit: "MessageCharLimit",
+        hasRegistryErrors: "HasErrors",
       }),
     },
     components:{
