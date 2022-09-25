@@ -20,7 +20,7 @@
             <h1 class="secondary-color text-center">Many thanks for your contribution</h1>
             <img src="@/assets/img/ski_1.jpg" class="img-fluid mt-4" alt="Many thanks!!" />
             <div class="mt-4">
-              <p>Be rest assured, we will put the funds towards the activities you contributed towards.</p>
+              <p>Rest assured, we will put the funds towards the activities you contributed towards.</p>
               <p>We look forward to seeing you on our big day!</p>
               <p>Adam & Sally</p>
             </div>

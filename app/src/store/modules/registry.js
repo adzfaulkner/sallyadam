@@ -79,12 +79,16 @@ const helper = {
         const errors = {};
 
         if (state.lastStep === STEP_ONE) {
-            const { email } = state.stepTwo;
+            const { email, message } = state.stepTwo;
 
             if (email === null || email === "") {
                 errors.email = "Please enter your email";
             } else if (!helper.ValidateEmail(email)) {
                 errors.email = "Please enter a valid email";
+            }
+
+            if (String(message).length > 500) {
+                errors.message = "Please keep your message to under 500 chars long";
             }
         }
 
@@ -203,8 +207,11 @@ export const actions = {
         await commit("payFee", decision);
         await commit("updateContributionTotal");
     },
-    async MessageAdded({commit}, message) {
+    async MessageAdded({commit, state}, message) {
+        message = String(message).trim();
+
         await commit("messageAdded", message);
+        await commit("errors", helper.Validate(state));
     },
     async EmailAdded({commit, state}, email) {
         email = String(email).trim();

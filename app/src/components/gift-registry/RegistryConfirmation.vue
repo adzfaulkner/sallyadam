@@ -29,8 +29,10 @@
             <div v-if="hasFieldError(errors, 'email')" class="invalid-feedback taviraj-font-family">{{getFieldError(errors, 'email')}}</div>
           </div>
           <div class="mt-3">
-            <label class="form-label">Write a personal message to the hosts (optional)</label>
-            <textarea class="form-control" rows="5" @change="messageUpdated" :value="stepTwo.message"></textarea>
+            <label class="form-label">Optional personal message to the hosts</label>
+            <textarea :class="hasFieldError(errors, 'message') ? 'form-control is-invalid' : 'form-control'" rows="5" @change="messageUpdated" :value="stepTwo.message"></textarea>
+            <div v-if="hasFieldError(errors, 'message')" class="invalid-feedback taviraj-font-family">{{getFieldError(errors, 'message')}}</div>
+            <small v-else id="messageHelp" class="form-text text-muted">500 character limit</small>
           </div>
           <div class="form-check mt-3">
             <input class="form-check-input" type="checkbox" @click="payFee" :checked="stepTwo.payFee">
