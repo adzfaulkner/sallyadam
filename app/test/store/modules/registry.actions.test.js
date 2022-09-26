@@ -29,7 +29,6 @@ try {
 }
 
 const invalidEmails = [
-    [null, "Please enter your email"],
     ["", "Please enter your email"],
     ["example.com", "Please enter a valid email"],
     ["test@", "Please enter a valid email"],
@@ -38,7 +37,7 @@ const invalidEmails = [
 ];
 
 describe('Add email address',  () => {
-    it.each(validEmails)('Valid emails should commit the entered email and not commit error message',  async (email) => {
+    it.each(validEmails)('Valid emails should commit the entered email and commit error message of none',  async (email) => {
         const commits = [];
         const commit = (mutation, val) => {
             commits.push({
@@ -60,12 +59,15 @@ describe('Add email address',  () => {
             mutation: "emailAdded",
             val: email,
         },{
-            mutation: "errors",
-            val: {},
+            mutation: "regError",
+            val: {
+                field: 'email',
+                error: null,
+            },
         }]);
     });
 
-    it.each(invalidEmails)('Invalid emails should commit the entered email and commit a error message',  async (email, error) => {
+    it.each(invalidEmails)('Invalid emails should commit the entered email and commit an error message',  async (email, error) => {
         const commits = [];
         const commit = (mutation, val) => {
             commits.push({
@@ -87,11 +89,12 @@ describe('Add email address',  () => {
             mutation: "emailAdded",
             val: String(email),
         },{
-            mutation: "errors",
+            mutation: "regError",
             val: {
-                email: error,
+                field: 'email',
+                error,
             },
-        }]);
+        }], 'Email is: ' + email);
     });
 });
 
