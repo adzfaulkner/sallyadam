@@ -25,7 +25,7 @@ const initialState = {
     },
     stepTwo: {
         items: [],
-        email: "",
+        email: null,
         payFeeAutoApplied: false,
         payFee: false,
         message: null,
@@ -83,18 +83,31 @@ const helper = {
         if (state.lastStep === STEP_ONE) {
             const { email, message } = state.stepTwo;
 
-            if (email === null || email === "") {
-                errors.email = "Please enter your email";
-            } else if (!helper.ValidateEmail(email)) {
-                errors.email = "Please enter a valid email";
+            const emailMsg = helper.CheckEmail(email);
+            const msgMsg = helper.CheckMessage(message);
+
+            if (emailMsg !== null) {
+                errors.email = emailMsg;
             }
 
-            if (String(message).length > MESSAGE_CHAR_LIMIT) {
-                errors.message = "Please keep your message to under 500 chars long";
+            if (msgMsg !== null) {
+                errors.message = msgMsg;
             }
         }
 
         return errors;
+    },
+    CheckMessage: (message) => {
+        return String(message).length > MESSAGE_CHAR_LIMIT ? "Please keep your message to under 500 chars long" : null;
+    },
+    CheckEmail: (email) => {
+        if (email === null || email === "") {
+            return "Please enter your email";
+        } else if (!helper.ValidateEmail(email)) {
+            return "Please enter a valid email";
+        }
+
+        return null;
     },
     ValidateEmail: (email) => {
         const re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -215,17 +228,21 @@ export const actions = {
         await commit("payFee", decision);
         await commit("updateContributionTotal");
     },
-    async MessageAdded({commit, state}, message) {
+    async MessageAdded({commit}, message) {
         message = String(message);
-
         await commit("messageAdded", message);
-        await commit("errors", helper.Validate(state));
+
+        const error = helper.CheckMessage(message);
+        await commit("regError", { field: 'message', error });
     },
-    async EmailAdded({commit, state}, email) {
+    async EmailAdded({commit}, email) {
         email = String(email).trim();
 
         await commit("emailAdded", email);
-        await commit("errors", helper.Validate(state));
+
+        const error = helper.CheckEmail(email);
+
+        await commit("regError", { field: 'email', error });
     },
     async LastStep({commit}) {
         await commit("lastStep");
@@ -420,6 +437,35 @@ export const mutations = {
 
         if (lastStep === null) {
             state.stepOne.errors = errors;
+        }
+    },
+    regError(state, {field, error}) {
+        const { lastStep } = state;
+
+        if (lastStep === STEP_ONE) {
+            if (error === null) {
+                delete state.stepTwo.errors[field];
+                return;
+            }
+
+            state.stepTwo.errors = {
+                ...state.stepTwo.errors,
+                [field]: error,
+            };
+        }
+
+        if (lastStep === null) {
+            console.log('in state', field, error, state.stepOne);
+
+            if (error === null) {
+                delete state.stepOne.errors[field];
+                return;
+            }
+
+            state.stepOne.errors = {
+                ...state.stepOne.errors,
+                [field]: error,
+            };
         }
     }
 };
