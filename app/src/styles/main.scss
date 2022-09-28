@@ -98,7 +98,7 @@ h6 {
 }
 
 .btn {
-  color: $white;
+  color: $white !important;
   border: 1px;
   &:focus,
   &:hover,
@@ -106,7 +106,7 @@ h6 {
   &:visited,
   &:focus,
   &:disabled {
-    color: $white;
+    color: $white !important;
     border: 1px;
     box-shadow: none;
   }
