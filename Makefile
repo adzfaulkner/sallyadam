@@ -130,3 +130,28 @@ ci_build_fe:
 ci_deploy_fe:
 	docker run -v ${PWD}/app:/aws -e AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} -e AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} amazon/aws-cli s3 sync dist/ s3://${AWS_BUCKET_NAME} --region eu-west-2
 	docker run -v ${PWD}/app:/aws -e AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} -e AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} amazon/aws-cli cloudfront create-invalidation --distribution-id ${AWS_CF_DISTRIBUTION_ID} --paths '/*' --region eu-west-2
+
+docker_build_tag_push:
+	make build_docker_image_js
+	make build_docker_image_go
+	make build_docker_image_serverless
+	docker tag ${IMAGE_TAG_JS}:latest ghcr.io/adzfaulkner/${IMAGE_TAG_JS}:latest
+	docker tag ${IMAGE_TAG_SERVERLESS}:latest ghcr.io/adzfaulkner/${IMAGE_TAG_SERVERLESS}:latest
+	docker tag ${IMAGE_TAG_GO}:latest ghcr.io/adzfaulkner/${IMAGE_TAG_GO}:latest
+	docker tag ${IMAGE_TAG_GO_LINT}:latest ghcr.io/adzfaulkner/${IMAGE_TAG_GO_LINT}:latest
+	docker push ghcr.io/adzfaulkner/${IMAGE_TAG_JS}:latest
+	docker push ghcr.io/adzfaulkner/${IMAGE_TAG_SERVERLESS}:latest
+	docker push ghcr.io/adzfaulkner/${IMAGE_TAG_GO}:latest
+	docker push ghcr.io/adzfaulkner/${IMAGE_TAG_GO_LINT}:latest
+
+docker_pull_fe:
+	docker pull ghcr.io/adzfaulkner/${IMAGE_TAG_JS}:latest
+	docker tag ghcr.io/adzfaulkner/${IMAGE_TAG_JS}:latest ${IMAGE_TAG_JS}:latest
+
+docker_pull_be:
+	docker pull ghcr.io/adzfaulkner/${IMAGE_TAG_SERVERLESS}:latest
+	docker pull ghcr.io/adzfaulkner/${IMAGE_TAG_GO}:latest
+	docker pull ghcr.io/adzfaulkner/${IMAGE_TAG_GO_LINT}:latest
+	docker tag ghcr.io/adzfaulkner/${IMAGE_TAG_SERVERLESS}:latest ${IMAGE_TAG_SERVERLESS}:latest
+	docker tag ghcr.io/adzfaulkner/${IMAGE_TAG_GO}:latest ${IMAGE_TAG_GO}:latest
+	docker tag ghcr.io/adzfaulkner/${IMAGE_TAG_GO_LINT}:latest ${IMAGE_TAG_GO_LINT}:latest

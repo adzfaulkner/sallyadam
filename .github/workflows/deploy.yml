@@ -1,4 +1,4 @@
-name: ci
+name: deploy
 
 on:
   push:
@@ -18,10 +18,17 @@ jobs:
       COOKIE_DOMAIN: ${{ secrets.COOKIE_DOMAIN }}
       COOKIE_SECURE: ${{ secrets.COOKIE_SECURE }}
       CORS_ALLOWED_ORIGIN: ${{ secrets.CORS_ALLOWED_ORIGIN }}
+      CR_PAT: ${{ secrets.CR_PAT }}
     steps:
       - uses: actions/checkout@v2
-      - name: Build go image
-        run: make build_docker_image_go
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.CR_PAT }}
+      - name: Pull go images
+        run: make docker_pull_be
       - name: Run Go tests
         run: make ci_tests_api
       - name: Build binary
@@ -42,8 +49,14 @@ jobs:
       AWS_CF_DISTRIBUTION_ID: ${{ secrets.AWS_CF_DISTRIBUTION_ID }}
     steps:
       - uses: actions/checkout@v2
-      - name: Build js image
-        run: make build_docker_image_js
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.CR_PAT }}
+      - name: Pull js image
+        run: make docker_pull_fe
       - name: Run JS tests
         run: make ci_tests_fe
       - name: Build FE
