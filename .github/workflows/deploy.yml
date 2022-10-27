@@ -33,8 +33,6 @@ jobs:
         run: make ci_tests_api
       - name: Build binary
         run: make ci_build_api
-      - name: Build serverless image
-        run: make build_docker_image_serverless
       - name: Deploy function
         run: make ci_deploy_api
 
